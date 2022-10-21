@@ -1,0 +1,51 @@
+:root {
+	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: 400;
+
+	/* colors  */
+	--clr-green-100: 129, 74%, 77%;
+	--clr-green-200: 129, 46%, 67%;
+	--clr-green-300: 129, 27%, 55%;
+	--clr-green-400: 130, 20%, 44%;
+	--clr-green-500: 129, 22%, 34%;
+
+	--clr-white-1: 129, 5%, 84%;
+
+	/* font-sizes */
+	--fs-100: 0.75rem;
+	--fs-200: 0.875rem;
+	--fs-300: 1rem;
+	--fs-400: 1.125rem;
+	--fs-500: 1.25rem;
+	--fs-600: 1.75rem;
+	--fs-700: 2.025rem;
+	--fs-800: 2.5rem;
+	--fs-900: 3rem;
+}
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+	background-color: inherit;
+	font-size: inherit;
+	color: inherit;
+}
+
+button {
+	cursor: pointer;
+}
+
+input,
+button {
+	outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		color: #f6f6f6;
+		background-color: #2f2f2f;
+	}
+}
