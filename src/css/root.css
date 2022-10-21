@@ -11,7 +11,16 @@
 	--clr-green-400: 130, 20%, 44%;
 	--clr-green-500: 129, 22%, 34%;
 
-	--clr-white-1: 129, 5%, 84%;
+	--clr-white: 0, 0%, 100%;
+	--clr-white-100: 135, 14%, 98%;
+
+	--clr-gray-100: 150, 5%, 91%;
+	--clr-gray-200: 150, 2%, 81%;
+	--clr-gray-300: 150, 1%, 71%;
+	--clr-gray-400: 150, 2%, 61%;
+	--clr-gray-500: 150, 1%, 53%;
+	--clr-gray-600: 150, 1%, 43%;
+	--clr-gray-600: 150, 1%, 35%;
 
 	/* font-sizes */
 	--fs-100: 0.75rem;
@@ -32,6 +41,22 @@
 	background-color: inherit;
 	font-size: inherit;
 	color: inherit;
+}
+html {
+	min-height: 100vh;
+	min-width: 100vw;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+	min-width: 100vw;
+}
+#app {
+	min-height: 100vh;
+	min-width: 100vw;
+	height: 100vh;
 }
 
 button {
