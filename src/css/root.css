@@ -1,0 +1,76 @@
+:root {
+	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: 400;
+
+	/* colors  */
+	--clr-green-100: 129, 74%, 77%;
+	--clr-green-200: 129, 46%, 67%;
+	--clr-green-300: 129, 27%, 55%;
+	--clr-green-400: 130, 20%, 44%;
+	--clr-green-500: 129, 22%, 34%;
+
+	--clr-white: 0, 0%, 100%;
+	--clr-white-100: 135, 14%, 98%;
+
+	--clr-gray-100: 150, 5%, 91%;
+	--clr-gray-200: 150, 2%, 81%;
+	--clr-gray-300: 150, 1%, 71%;
+	--clr-gray-400: 150, 2%, 61%;
+	--clr-gray-500: 150, 1%, 53%;
+	--clr-gray-600: 150, 1%, 43%;
+	--clr-gray-600: 150, 1%, 35%;
+
+	/* font-sizes */
+	--fs-100: 0.75rem;
+	--fs-200: 0.875rem;
+	--fs-300: 1rem;
+	--fs-400: 1.125rem;
+	--fs-500: 1.25rem;
+	--fs-600: 1.75rem;
+	--fs-700: 2.025rem;
+	--fs-800: 2.5rem;
+	--fs-900: 3rem;
+}
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+	background-color: inherit;
+	font-size: inherit;
+	color: inherit;
+}
+html {
+	min-height: 100vh;
+	min-width: 100vw;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+	min-width: 100vw;
+}
+#app {
+	min-height: 100vh;
+	min-width: 100vw;
+	height: 100vh;
+}
+
+button {
+	cursor: pointer;
+}
+
+input,
+button {
+	outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		color: #f6f6f6;
+		background-color: #2f2f2f;
+	}
+}
