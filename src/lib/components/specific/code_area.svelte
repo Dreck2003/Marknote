@@ -14,7 +14,6 @@
 	let selectionState = { start: { init: 0, y: 0 }, end: { init: 0, y: 0 } };
 	let changeManualSelection = false;
 
-	const Measures = { height: 22 };
 	const fixedNumber = (n: number, size: number): number => {
 		const number = Number(n.toFixed(size));
 		return number === 0 ? 0 : number;
@@ -28,7 +27,7 @@
 		const haveSelection = selectionStart !== selectionEnd;
 		// console.clear();
 		let y = Number((position.y / 22).toFixed(1));
-		let currentLine = textSplit[y];
+		let currentLine = textSplit[y] || "";
 		let lineLength = currentLine.length;
 		let positionX = fixedNumber(position.x / 8.8, 1);
 		let withShift = e.shiftKey;
@@ -99,7 +98,7 @@
 			arrowPos += 1;
 			return;
 		}
-		if (e.key === KeyboardKeys.ArrowRight && e.ctrlKey) {
+		if (e.key === KeyboardKeys.ArrowRight && e.ctrlKey && !withShift) {
 			if (selectionStart !== selectionEnd) return;
 			if (positionX === currentLine.length && y === textSplit.length - 1)
 				return;
@@ -154,7 +153,7 @@
 			arrowPos -= 1;
 			return;
 		}
-		if (e.key === KeyboardKeys.ArrowLeft && e.ctrlKey) {
+		if (e.key === KeyboardKeys.ArrowLeft && e.ctrlKey && !withShift) {
 			if (selectionStart !== selectionEnd) return;
 			if (position.x === 0 && position.y === 0) return;
 			changeManualSelection = true;
@@ -277,13 +276,14 @@
 	const handleInput = (e: Event) => {
 		let event = e as InputEvent;
 		const textarea = e.target as HTMLTextAreaElement;
-		const { selectionStart, selectionEnd, selectionDirection } = textarea;
-		if (event.inputType === InputType.insertText && event.data !== null) {
-			return (position = {
-				x: position.x + 8.8,
-				y: position.y,
-			});
-		}
+		const { selectionStart } = textarea;
+		// Hard implementation => 😓
+		// if (event.inputType === InputType.insertText && event.data !== null) {
+		// 	return (position = {
+		// 		x: selectionState.start.init + 8.8,
+		// 		y: selectionState.start.y,
+		// 	});
+		// }
 		if (event.inputType === InputType.insertText && event.data === null) {
 			return (position = {
 				x: 0,
@@ -344,10 +344,10 @@
 		on:select={handleSelect}
 		on:input={handleInput}
 		on:keydown={(e) => {
-			if (e.key === KeyboardKeys.ArrowRight && e.ctrlKey) {
+			if (e.key === KeyboardKeys.ArrowRight && e.ctrlKey && !e.shiftKey) {
 				e.preventDefault();
 			}
-			if (e.key === KeyboardKeys.ArrowLeft && e.ctrlKey) {
+			if (e.key === KeyboardKeys.ArrowLeft && e.ctrlKey && !e.shiftKey) {
 				e.preventDefault();
 			}
 		}}
