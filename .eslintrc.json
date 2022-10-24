@@ -11,20 +11,25 @@
         "@typescript-eslint",
         "svelte3"
     ],
+    "parser": "@typescript-eslint/parser",
     "overrides": [
         {
             "files": [
                 "**/*.svelte"
             ],
-            "processor": "svelte3/svelte3"
+            "processor": "svelte3/svelte3",
+            "rules": {
+                "import/first": "off"
+            }
         }
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "project": [
-            "tsconfig.json"
-        ]
+        "project": "tsconfig.json"
+    },
+    "settings": {
+        "svelte3/typescript": true
     },
     "rules": {
         "no-alert": "error",
