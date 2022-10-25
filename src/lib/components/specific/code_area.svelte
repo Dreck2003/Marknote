@@ -9,10 +9,12 @@
 		"import React from 'react';\nimport svelte from 'svelte' \nexport let Dikson='Dikson'\n \njajaj";
 	let textCode: HTMLTextAreaElement | null = null;
 	let codeArea: HTMLElement | null = null;
+	let codeLines: HTMLElement | null = null;
 	let position = { x: 0, y: 0 };
 	let arrowPos = 0;
 	let selectionState = { start: { init: 0, y: 0 }, end: { init: 0, y: 0 } };
 	let changeManualSelection = false;
+	let isInitialClick = false;
 
 	const fixedNumber = (n: number, size: number): number => {
 		const number = Number(n.toFixed(size));
@@ -213,25 +215,32 @@
 		}
 	};
 	const handleClickCodeArea = (e: MouseEvent) => {
-		textCode.focus();
-		arrowPos = 0;
-		textCode.setSelectionRange(0, 0);
-		const { pageY, pageX } = e;
+		console.clear();
 		const { offsetLeft } = codeArea;
-		const XPosition = pageX - offsetLeft;
-		const YPosition = pageY;
-		// position = {
-		// 	x: XPosition,
-		// 	y: Math.floor(YPosition / Measures.height) * Measures.height,
-		// };
+		const x = e.pageX - (offsetLeft + codeLines.offsetLeft);
+		let XPosition = fixedNumber(x / 8.8, 0);
+		let YPosition = Math.floor(e.pageY / 22);
+		if (YPosition >= textSplit.length) YPosition = textSplit.length - 1;
+		let currentLineLength = textSplit[YPosition].length;
+		if (XPosition >= currentLineLength) XPosition = currentLineLength;
+		let count = 0;
+		Arrays.loop(YPosition, (i) => {
+			count += textSplit[i].length + 1;
+		});
 		position = {
-			x: 0,
-			y: 0,
+			x: XPosition * 8.8,
+			y: YPosition * 22,
 		};
+		arrowPos = XPosition;
+		isInitialClick = true;
+		textCode.setSelectionRange(count + XPosition, count + XPosition);
+		textCode.focus();
+		return;
 	};
 	const handleSelect = (e: Event) => {
-		if (changeManualSelection) {
+		if (changeManualSelection || isInitialClick) {
 			changeManualSelection = false;
+			isInitialClick = false;
 			return;
 		}
 		const textarea = e.target as HTMLTextAreaElement;
@@ -312,20 +321,22 @@
 	};
 </script>
 
-<section
-	class="bg-white-100"
-	on:click={handleClickCodeArea}
-	on:keydown={() => {}}
-	bind:this={codeArea}
->
+<section class="bg-white-100" bind:this={codeArea}>
 	<div class="display_code grid">
 		<div class="code-index">
 			{#each textSplit as line, i}
 				<div>{i}</div>
 			{/each}
 		</div>
-		<div class="code-lines">
-			<Cursor style="transform:translate({position.x}px,{position.y}px); " />
+		<div
+			class="code-lines"
+			on:click={handleClickCodeArea}
+			on:keydown={() => {}}
+			bind:this={codeLines}
+		>
+			<Cursor
+				style="transform:translate({position.x}px,{position.y}px); pointer-events:none;"
+			/>
 			{#each textSplit as line, i}
 				<SingleLine text={line} />
 			{/each}
@@ -358,6 +369,9 @@
 	.display_code {
 		grid-template-columns: 2.5rem 1fr;
 		--gap: 0.8rem;
+	}
+	.code-lines {
+		min-height: 100vh;
 	}
 	.code-index > * {
 		height: 22px;
