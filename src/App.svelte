@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CodeArea from "./lib/components/specific/code_area.svelte";
+	import CodeArea from "./lib/components/specific/code-area/code_area.svelte";
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 </script>
 
