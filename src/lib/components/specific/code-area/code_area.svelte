@@ -6,8 +6,7 @@
 	import { ContextCodeArea } from "../../../utils/code_area_util";
 	import { InputType } from "../../../interfaces/inputs";
 	import { onMount } from "svelte";
-	export let value =
-		"import React from 'react';\nimport svelte from 'svelte' \nexport let Dikson='Dikson'\n console.log('Dikson es un capo') \njajaj";
+	export let value = "";
 	let textCode: HTMLTextAreaElement | null = null;
 	type selectType = {
 		start: { init: number; y: number };
@@ -17,15 +16,14 @@
 	let codeLines: HTMLElement | null = null;
 	let position = { x: 0, y: 0 };
 	let arrowPos = 0;
-	$: console.log("arrowPos: ", arrowPos);
 	let selectionState = { start: { init: 0, y: 0 }, end: { init: 0, y: 0 } };
 	let changeManualSelection = false;
 	let isInitialClick = false;
 	let selectionWithMouse = {
 		isMouseDown: false,
 		isMouseMove: false,
+		isMouseUp: false,
 	};
-	let isMouseUp = false;
 	let codeChildren = [];
 	let selectedChildren: HTMLElement[] = [];
 
@@ -94,7 +92,6 @@
 	const handleKeydown = (e: KeyboardEvent) => {
 		const textarea = e.target as HTMLTextAreaElement;
 		const { selectionStart, selectionEnd, selectionDirection } = textarea;
-		// console.clear();
 		let y = Number((position.y / 22).toFixed(1));
 		let currentLine = textSplit[y] || "";
 		let lineLength = currentLine.length;
@@ -104,7 +101,6 @@
 		if (e.key === KeyboardKeys.ArrowDown && !withShift) {
 			if (selectionStart !== selectionEnd) {
 				e.preventDefault();
-				console.clear();
 				resetStylesInElements();
 				changeManualSelection = true;
 				if (selectionState.end.y >= textSplit.length - 1) {
@@ -138,10 +134,6 @@
 			}
 			if (y + 1 > textSplit.length) return;
 			let nextLine = textSplit[y + 1];
-			console.clear();
-			console.log("ahora acá vamos");
-			console.log({ nextLine: nextLine.length, arrowPos });
-
 			if (nextLine.length < arrowPos) {
 				position.x = nextLine.length * 8.8;
 				position.y = position.y + 22;
@@ -354,7 +346,6 @@
 			let endLine = shadowLines.pop();
 			resetStyles(endLine);
 		}
-		console.log({ start: { ...start }, end: { ...end } });
 		for (let i = start.y; i < end.y + 1; i++) {
 			const el = shadowLines[count];
 			if (end.y === start.y) {
@@ -401,7 +392,7 @@
 	const handleMouseDown = (e: MouseEvent) => {
 		selectionWithMouse.isMouseDown = true;
 		selectionWithMouse.isMouseMove = false;
-		isMouseUp = false;
+		selectionWithMouse.isMouseUp = false;
 		resetStylesInElements();
 		selectedChildren = codeLines
 			? getElementShadow([...codeLines.children].slice(1) as Array<HTMLElement>)
@@ -409,7 +400,6 @@
 		codeChildren = codeLines ? [...codeLines.children].slice(1) : [];
 		const { XPosition, YPosition } = getPositionInText(e.pageX, e.pageY);
 		arrowPos = XPosition;
-		// console.log("mouseDown: ", arrowPos);
 		selectionState.start = {
 			init: XPosition,
 			y: YPosition,
@@ -418,8 +408,10 @@
 	onMount(() => {
 		let handleMouseMove = (e: MouseEvent) => {
 			if (selectionWithMouse.isMouseDown) {
-				selectionWithMouse.isMouseMove = true;
 				const { XPosition, YPosition } = getPositionInText(e.pageX, e.pageY);
+				const { init, y } = selectionState.start;
+				if (y === YPosition && Math.abs(XPosition - init) === 0) return;
+				selectionWithMouse.isMouseMove = true;
 				selectionState.end = {
 					init: XPosition,
 					y: YPosition,
@@ -441,8 +433,8 @@
 				// 	start: { ...selectionState.start },
 				// 	end: { ...selectionState.start },
 				// };
-				const { start, end } = selectionState;
-				if (start.init !== end.init && start.y !== end.y) return;
+				// if (start.init !== end.init && start.y !== end.y) return;
+				//
 				const { XPosition, YPosition } = getPositionInText(e.pageX, e.pageY);
 				let count = 0;
 				Arrays.loop(YPosition, (i) => {
@@ -487,9 +479,8 @@
 					}
 					return false;
 				});
-				// console.log("on:mouseup");
 				textCode.focus();
-				isMouseUp = true;
+				selectionWithMouse.isMouseUp = true;
 				textCode.setSelectionRange(
 					countStart.count,
 					countEnd.count,
@@ -509,18 +500,15 @@
 	});
 
 	const handleSelect = (e: Event) => {
-		// console.log("on:selected before");
-		// console.clear();
 		if (changeManualSelection || isInitialClick) {
 			changeManualSelection = false;
 			isInitialClick = false;
 			return;
 		}
-		if (isMouseUp) {
-			isMouseUp = false;
+		if (selectionWithMouse.isMouseUp) {
+			selectionWithMouse.isMouseUp = false;
 			return;
 		}
-		console.log("on:select");
 		const textarea = e.target as HTMLTextAreaElement;
 		const { selectionStart, selectionEnd, selectionDirection } = textarea;
 		const { start, end } = searchSelection({ selectionStart, selectionEnd });
@@ -532,6 +520,7 @@
 		let min = Math.min(selectionState.start.y, selectionState.end.y);
 		max = max >= textSplit.length - 1 ? textSplit.length - 1 : max + 1;
 		min = min <= 0 ? 0 : min - 1;
+		codeChildren = codeLines ? [...codeLines.children].slice(1) : [];
 		selectedChildren = getElementShadow(codeChildren.slice(min, max + 1));
 		shadowText(selectionState);
 		const selectedCursor = selectionDirection === "backward" ? start : end;
@@ -544,7 +533,7 @@
 	const handleInput = (e: Event) => {
 		let event = e as InputEvent;
 		const textarea = e.target as HTMLTextAreaElement;
-		const { selectionStart } = textarea;
+		const { selectionStart, selectionEnd } = textarea;
 		// Hard implementation => 😓
 		// if (event.inputType === InputType.insertText && event.data !== null) {
 		// 	return (position = {
@@ -552,6 +541,9 @@
 		// 		y: selectionState.start.y,
 		// 	});
 		// }
+		if (selectionStart !== selectionEnd) {
+			return handleSelect(e);
+		}
 		resetStylesInElements();
 		if (event.inputType === InputType.insertText && event.data === null) {
 			arrowPos = 0;
@@ -575,9 +567,6 @@
 			count += line.length + 1;
 			return false;
 		});
-		console.clear();
-		console.log("nueva position");
-		console.log({ arrowPos, nextX: selectionStart - count });
 		arrowPos = selectionStart - count;
 		return (position = {
 			x: (selectionStart - count) * 8.8,
@@ -588,11 +577,11 @@
 
 <section class="bg-white-100" bind:this={codeArea}>
 	<div class="display_code grid">
-		<div class="code-index">
+		<!-- <div class="code-index">
 			{#each textSplit as line, i}
 				<div>{i + 1}</div>
 			{/each}
-		</div>
+		</div> -->
 		<div
 			class="code-lines"
 			on:keydown={() => {}}
@@ -639,22 +628,23 @@
 
 <style>
 	.display_code {
-		grid-template-columns: 2.5rem 1fr;
-		--gap: 0.8rem;
+		/* grid-template-columns: 2.5rem 1fr; */
+		/* --gap: 0.8rem; */
+		padding-left: 0.5em;
 	}
 	.code-lines {
 		min-height: 100vh;
 		user-select: none;
 		cursor: text;
 	}
-	.code-index > * {
+	/* .code-index > * {
 		height: 22px;
 	}
 
 	.code-index {
 		text-align: end;
 		user-select: none;
-	}
+	} */
 	section {
 		position: relative;
 		font-family: "Consolas";
