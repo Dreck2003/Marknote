@@ -1,11 +1,11 @@
 <script lang="ts">
-	import CodeArea from "./lib/components/specific/code-area/code_area.svelte";
+	import FileArea from "./lib/components/layout/file-area/file-area.svelte";
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 </script>
 
 <main class="grid" style="height: 100%;">
 	<Sidebar />
-	<CodeArea />
+	<FileArea />
 </main>
 
 <style>
