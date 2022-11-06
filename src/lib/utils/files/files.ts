@@ -22,44 +22,51 @@ export const readDirectoryRecursive = async (
 		title: initName,
 		id: Symbol(null),
 	};
-	return await recursiveReadFolder(data, fileContent);
+	const folder = await recursiveReadFolder(data, fileContent);
+	return folder;
 };
 
 export const recursiveReadFolder = async (
 	entries: FileEntry[],
 	currentFolder: FolderContent
 ): Promise<FolderContent> => {
-	// eslint-disable-next-line @typescript-eslint/no-misused-promises
-	entries.forEach(async (entry) => {
+	const folders: FileEntry[] = [];
+	const files: FileEntry[] = [];
+
+	entries.forEach((entry) => {
 		if (entry.children && Array.isArray(entry.children)) {
-			try {
-				const newFolder = await recursiveReadFolder(entry.children, {
-					files: [],
-					folders: [],
-					path: entry.path,
-					title: entry.name ?? "name-less",
-					id: Symbol(entry.name),
-				});
-				currentFolder.folders.push(newFolder);
-			} catch (error) {
-				// console.log("error: ", { error });
-			}
-			return;
+			return folders.push(entry);
 		}
-		try {
+		if (entry.name && entry.name.split(".").pop() === "md") {
+			files.push(entry);
+		}
+	});
+
+	const filesPromise = await Promise.all(
+		files.map(async (entry: FileEntry) => {
 			const content = await readTextFile(entry.path);
-			currentFolder.files.push({
+			return {
 				name: entry.name,
 				content,
 				path: entry.path,
 				id: Symbol(entry.name),
-			});
-		} catch (error) {
-			// console.log("error file: ", { error });
-		}
-	});
+			};
+		})
+	);
 
-	return currentFolder;
+	const folderPromise = await Promise.all(
+		folders.map(async (entry: FileEntry) => {
+			return await recursiveReadFolder(entry.children, {
+				files: [],
+				folders: [],
+				path: entry.path,
+				title: entry.name ?? "name-less",
+				id: Symbol(entry.name),
+			});
+		})
+	);
+
+	return { ...currentFolder, files: filesPromise, folders: folderPromise };
 };
 
 export const saveFile = async (path: string, content: string): Promise<any> => {

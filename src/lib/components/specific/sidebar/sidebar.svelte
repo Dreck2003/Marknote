@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { FolderContent } from "../../../interfaces/files/files";
 	import Folder from "../../common/accordion/folder/folder.svelte";
 	import ShadowFolder from "../../common/accordion/folder/shadow-folder.svelte";
-	export let folderContent: FolderContent;
+	import { FolderStore } from "../../../store/store";
 	let y = 0;
 	const handleClickFolder = (e: MouseEvent, height: number) => {
 		y = Math.trunc(e.pageY / (height * 1.1)) * height;
@@ -15,7 +14,7 @@
 	</div>
 	<div style="position: relative;">
 		<ShadowFolder bind:y style="transform: translate(0px,{y ?? 0}px);" />
-		<Folder expanded content={folderContent} click={handleClickFolder} />
+		<Folder expanded content={$FolderStore} click={handleClickFolder} />
 	</div>
 </section>
 

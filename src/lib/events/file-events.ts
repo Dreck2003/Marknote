@@ -11,8 +11,8 @@ export const OpenFolderEvent = async (): Promise<FolderContent> => {
 		filters: [{ name: "", extensions: ["md"] }],
 		recursive: true,
 	});
-	if (Array.isArray(directory))
+	if (Array.isArray(directory)) {
 		return { files: [], folders: [], title: "", path: "", id: Symbol(null) };
-	const res = await readDirectoryRecursive(directory);
-	return res;
+	}
+	return await readDirectoryRecursive(directory);
 };

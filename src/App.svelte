@@ -5,15 +5,12 @@
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 	import { FileEvents } from "./lib/events/events";
 	import { OpenFolderEvent } from "./lib/events/file-events";
-	import type { FolderContent } from "./lib/interfaces/files/files";
 	import { FolderStore } from "./lib/store/store";
-
-	let folderContent = FolderStore;
 
 	onMount(async () => {
 		const handleReadFile = async () => {
 			try {
-				$folderContent = await OpenFolderEvent();
+				$FolderStore = await OpenFolderEvent();
 			} catch (error) {
 				alert("Not posible open files");
 				console.log({ error });
@@ -25,11 +22,10 @@
 			unlisten();
 		};
 	});
-	console.log(folderContent);
 </script>
 
 <main class="grid" style="height: 100%;">
-	<Sidebar folderContent={$folderContent} />
+	<Sidebar />
 	<FileArea />
 </main>
 
