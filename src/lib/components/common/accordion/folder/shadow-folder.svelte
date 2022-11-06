@@ -1,6 +1,5 @@
 <script lang="ts">
 	let shadowDiv: HTMLElement | null = null;
-	console.log($$props.style);
 </script>
 
 <div class="Shadow_Folder" bind:this={shadowDiv} style={$$props.style} />

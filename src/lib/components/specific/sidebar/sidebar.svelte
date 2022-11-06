@@ -1,12 +1,8 @@
 <script lang="ts">
-	import type { FolderContent } from "../../common/accordion/folder/helper.folder";
+	import type { FolderContent } from "../../../interfaces/files/files";
 	import Folder from "../../common/accordion/folder/folder.svelte";
 	import ShadowFolder from "../../common/accordion/folder/shadow-folder.svelte";
-	const folderContent: FolderContent = {
-		files: [],
-		folders: [],
-		title: "Marknote",
-	};
+	export let folderContent: FolderContent;
 	let y = 0;
 	const handleClickFolder = (e: MouseEvent, height: number) => {
 		y = Math.trunc(e.pageY / (height * 1.1)) * height;

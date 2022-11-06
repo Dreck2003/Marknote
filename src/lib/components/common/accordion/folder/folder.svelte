@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ChevronIcon from "../../../svg/chevron-icon.svelte";
 	import File from "./file.svelte";
-	import type { FolderContent } from "./helper.folder";
+	import type { FolderContent } from "../../../../interfaces/files/files";
 	export let content: FolderContent;
 	export let expanded = false;
 	export let padding = false;
@@ -14,7 +14,7 @@
 <div class="Folder_Content" on:click={handleClickFolder} on:keydown>
 	<header
 		on:click={() => {
-			if (content.files.length <= 0 || content.folders.length <= 0) return;
+			if (content.files.length <= 0 && content.folders.length <= 0) return;
 			expanded = !expanded;
 		}}
 		on:keydown
@@ -39,12 +39,19 @@
 		<section>
 			{#if content.folders.length}
 				{#each content.folders as folder}
-					<svelte:self content={folder} padding />
+					<svelte:self content={{ ...folder }} padding />
 				{/each}
 			{/if}
 			{#if content.files.length}
 				{#each content.files as file}
-					<File {padding} name={file.name} />
+					<File
+						{padding}
+						name={file.name}
+						content={file.content}
+						path={file.path}
+						id={file.id}
+						folderId={content.id}
+					/>
 				{/each}
 			{/if}
 		</section>
