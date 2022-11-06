@@ -1,11 +1,32 @@
 <script lang="ts">
-	import CodeArea from "./lib/components/specific/code-area/code_area.svelte";
+	import { listen } from "@tauri-apps/api/event";
+	import { onMount } from "svelte";
+	import FileArea from "./lib/components/layout/file-area/file-area.svelte";
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
+	import { FileEvents } from "./lib/events/events";
+	import { OpenFolderEvent } from "./lib/events/file-events";
+	import { FolderStore } from "./lib/store/store";
+
+	onMount(async () => {
+		const handleReadFile = async () => {
+			try {
+				$FolderStore = await OpenFolderEvent();
+			} catch (error) {
+				alert("Not posible open files");
+				console.log({ error });
+			}
+		};
+
+		const unlisten = await listen(FileEvents.OpenFolder, handleReadFile);
+		return () => {
+			unlisten();
+		};
+	});
 </script>
 
 <main class="grid" style="height: 100%;">
 	<Sidebar />
-	<CodeArea />
+	<FileArea />
 </main>
 
 <style>

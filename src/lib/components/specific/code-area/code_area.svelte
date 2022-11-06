@@ -5,7 +5,7 @@
 	import SingleLine from "../../common/coder/single_line.svelte";
 	import { ContextCodeArea } from "../../../utils/code_area_util";
 	import { InputType } from "../../../interfaces/inputs";
-	import { onMount } from "svelte";
+	import { createEventDispatcher, onMount } from "svelte";
 	export let value = "";
 	let textCode: HTMLTextAreaElement | null = null;
 	type selectType = {
@@ -31,6 +31,9 @@
 		const number = Number(n.toFixed(size));
 		return number === 0 ? 0 : number;
 	};
+
+	const dispatcher = createEventDispatcher();
+
 	const getLeftDistance = () => {
 		return (codeArea?.offsetLeft || 0) + (codeLines?.offsetLeft || 0);
 	};
@@ -97,6 +100,14 @@
 		let lineLength = currentLine.length;
 		let positionX = fixedNumber(position.x / 8.8, 1);
 		let withShift = e.shiftKey;
+
+		if (e.key === "s" && e.ctrlKey && !e.shiftKey) {
+			dispatcher("save", {
+				content: value,
+			});
+			e.preventDefault();
+			return;
+		}
 
 		if (e.key === KeyboardKeys.ArrowDown && !withShift) {
 			if (selectionStart !== selectionEnd) {

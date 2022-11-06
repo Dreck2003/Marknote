@@ -12,7 +12,14 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "fs":{
+        "all": true,
+        "scope": ["$APP/*","$HOME/*","$DOCUMENT/*","$DESKTOP/*"]
+      },
+      "path":{
+        "all":true
+      }
     },
     "bundle": {
       "active": true,
@@ -45,6 +52,17 @@
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
+      }
+    },
+    "cli":{
+      "description": "", 
+      "longDescription": "", 
+      "beforeHelp": "", 
+      "afterHelp": "", 
+      "args": [], 
+      "subcommands": {
+        "subcommand-name": {
+        }
       }
     },
     "security": {
