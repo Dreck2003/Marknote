@@ -16,3 +16,7 @@ export const OpenFolderEvent = async (): Promise<FolderContent> => {
 	}
 	return await readDirectoryRecursive(directory);
 };
+
+export const RemoveFolder = async (path: string): Promise<any> => {
+	// removeDir
+};

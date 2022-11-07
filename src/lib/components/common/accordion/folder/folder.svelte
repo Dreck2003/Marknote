@@ -2,13 +2,20 @@
 	import ChevronIcon from "../../../svg/chevron-icon.svelte";
 	import File from "./file.svelte";
 	import type { FolderContent } from "../../../../interfaces/files/files";
+	import Dots from "../../../svg/dots.svelte";
 	export let content: FolderContent;
 	export let expanded = false;
 	export let padding = false;
 	export let click = (e: MouseEvent, height: number) => {};
+	export let handleShowMenu = (
+		e: MouseEvent,
+		folder: { id: symbol; path: string; title: string }
+	) => {};
 	const handleClickFolder = (e: MouseEvent) => {
 		click(e, 30);
 	};
+	let showMenu = false;
+	let showDots = false;
 </script>
 
 <div class="Folder_Content" on:click={handleClickFolder} on:keydown>
@@ -18,6 +25,13 @@
 			expanded = !expanded;
 		}}
 		on:keydown
+		on:mouseover={() => (showDots ? null : (showDots = true))}
+		on:focus
+		on:mouseleave={() => {
+			if (!showMenu) {
+				showDots ? (showDots = false) : null;
+			}
+		}}
 		class="grid a-i-center"
 		style="padding-left: {padding
 			? '0.7em'
@@ -31,15 +45,32 @@
 				position={expanded ? "down" : "right"}
 			/>
 		</span>
-		<span>
+		<span class="ellipsis">
 			{content.title}
+		</span>
+
+		<span
+			class="Dots flex"
+			style="visibility: {showDots ? 'visible' : 'hidden'};"
+			on:click={(e) => {
+				e.stopPropagation();
+				handleShowMenu(e, {
+					id: content.id,
+					path: content.path,
+					title: content.title,
+				});
+				showMenu = !showMenu;
+			}}
+			on:keydown
+		>
+			<Dots svgProps={{ fill: "red", class: "Dots flex" }} />
 		</span>
 	</header>
 	{#if expanded}
 		<section>
 			{#if content.folders.length}
 				{#each content.folders as folder}
-					<svelte:self content={{ ...folder }} padding />
+					<svelte:self content={{ ...folder }} padding {handleShowMenu} />
 				{/each}
 			{/if}
 			{#if content.files.length}
@@ -73,6 +104,9 @@
 		cursor: pointer;
 		padding-left: 1em;
 		height: 30px;
-		grid-template-columns: 20% 80%;
+		grid-template-columns: 20% 60% 20%;
+	}
+	:global(.Wrapper_Menu) {
+		display: flex;
 	}
 </style>

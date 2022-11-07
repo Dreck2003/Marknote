@@ -4,7 +4,7 @@
 	import FileArea from "./lib/components/layout/file-area/file-area.svelte";
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 	import { FileEvents } from "./lib/events/events";
-	import { OpenFolderEvent } from "./lib/events/file-events";
+	import { OpenFolderEvent } from "./lib/events/folder-events";
 	import { FolderStore } from "./lib/store/store";
 
 	onMount(async () => {
