@@ -94,14 +94,6 @@ export const removeFolder = async (path: string): Promise<any> => {
 	await removeDir(path);
 };
 
-export const createFolder = async (
-	path: string,
-	name: string
-): Promise<any> => {
-	// const pathFolderComplete = path + sep + name;
-	// await createDir("",{recursive:true});
-};
-
 // Files functions:
 
 export const saveFile = async (path: string, content: string): Promise<any> => {
