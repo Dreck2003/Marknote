@@ -1,5 +1,9 @@
 import { sep } from "@tauri-apps/api/path";
-import { createNewFolder, removeFolder } from "./../../../utils/files/folder";
+import {
+	createFolder,
+	createNewFolder,
+	removeFolder,
+} from "./../../../utils/files/folder";
 import {
 	createFile,
 	newFolder,
@@ -46,13 +50,23 @@ export const FolderStoreAction = {
 		);
 		FolderStore.set(newFolderTree);
 	},
-	async createFolder(folderId: symbol, newFolder: FolderContent) {
+	async createFolder(folderId: symbol, path: string, name: string) {
 		const folderTree = getValueOfFolderStore();
+		const createPath = await createFolder(path, name);
 		const folder = await createNewFolder(
 			folderId,
 			folderTree,
 			async (folder) => {
-				return { ...folder, folders: folder.folders.concat(newFolder) };
+				return {
+					...folder,
+					folders: folder.folders.concat({
+						id: Symbol(name),
+						title: name,
+						files: [],
+						folders: [],
+						path: createPath,
+					}),
+				};
 			}
 		);
 		FolderStore.set(folder);

@@ -5,10 +5,8 @@ import { createDir, removeDir } from "@tauri-apps/api/fs";
 export const createFolder = async (
 	path: string,
 	name: string
-): Promise<any> => {
+): Promise<string> => {
 	const pathFolderComplete = path + sep + name;
-	// console.log(pathFolderComplete);
-	// return pathFolderComplete;
 	await createDir(pathFolderComplete, { recursive: true });
 	return pathFolderComplete;
 };
