@@ -25,6 +25,7 @@
 	style="padding-left:{padding ? '3em' : '1em'}"
 	on:click={handleClick}
 	on:keydown
+	on:contextmenu
 >
 	{name}
 </div>

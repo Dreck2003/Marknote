@@ -1,6 +1,6 @@
 import { sep } from "@tauri-apps/api/path";
 import { createNewFolder, removeFolder } from "./../../../utils/files/folder";
-import { newFolder } from "./../../../utils/files/files";
+import { createFile, newFolder } from "./../../../utils/files/files";
 import { OpenFolderEvent } from "../../../events/folder-events";
 import type { FolderContent } from "../../../interfaces/files/files";
 import { writable } from "svelte/store";
@@ -81,5 +81,26 @@ export const FolderStoreAction = {
 		}));
 		FolderStore.set(folder);
 		return result.slice();
+	},
+	async createFile(pathFolder: string, folderId: symbol, fileName: string) {
+		const newPath = pathFolder + sep + fileName + ".md";
+		await createFile(newPath);
+		const folderTree = await createNewFolder(
+			folderId,
+			getValueOfFolderStore(),
+			async (f) => {
+				return {
+					...f,
+					files: f.files.concat({
+						content: "",
+						id: Symbol(""),
+						path: newPath,
+						name: fileName,
+					}),
+				};
+			}
+		);
+		FolderStore.set(folderTree);
+		return true;
 	},
 };

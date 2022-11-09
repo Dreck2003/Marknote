@@ -4,9 +4,8 @@ import {
 	readTextFile,
 	writeTextFile,
 	removeDir,
-	createDir,
 } from "@tauri-apps/api/fs";
-import { basename, sep } from "@tauri-apps/api/path";
+import { basename } from "@tauri-apps/api/path";
 import type { FolderContent, FileEntry } from "../../interfaces/files/files";
 
 export const readDirectoryRecursive = async (
@@ -109,4 +108,8 @@ export const renameFile = async (
 	// const fileName = filePath.pop();
 	// console.log({ filePath: filePath.join(sep), newName, fileName });
 	// await renameSingleFile(path,newPath);
+};
+
+export const createFile = async (pathFolder: string): Promise<any> => {
+	await writeTextFile(pathFolder, "");
 };

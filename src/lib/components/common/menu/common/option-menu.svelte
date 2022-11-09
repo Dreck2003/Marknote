@@ -1,19 +1,33 @@
 <script lang="ts">
+	import { createEventDispatcher } from "svelte";
 	import { MenuOptionsFolder } from "../../../../interfaces/files/folder-menu";
-	export let inputValue: string;
+	export let inputValue: string = "";
 	export let withInput = false;
 	export let showInput = false;
-	export let optionId: MenuOptionsFolder;
 	export let dispatchClick = () => {};
 	export let text = "";
-	export let handleKeyDown =
-		(option: MenuOptionsFolder) => (e: KeyboardEvent) => {};
+	export let handleKeyDown = (e: KeyboardEvent) => {};
+
+	let message = "";
+
+	const dispatcher = createEventDispatcher();
+
 	let input: HTMLInputElement | null = null;
+
+	const keyDowController = (e: KeyboardEvent) => {
+		handleKeyDown(e);
+		if (e.key === "Enter") {
+			console.log("Enter key pressed");
+			dispatcher("selectInput", { value: inputValue });
+			console.log("dispatch");
+		}
+	};
 </script>
 
 <span
 	on:click={() => {
 		dispatchClick();
+		showInput = !showInput;
 		if (input) {
 			setTimeout(() => {
 				input.focus();
@@ -25,11 +39,14 @@
 >
 	{#if withInput}
 		<input
+			autocorrect="off"
+			spellcheck="false"
+			autocomplete="off"
 			bind:this={input}
 			type="text"
 			bind:value={inputValue}
 			class:show={showInput}
-			on:keydown={handleKeyDown(optionId)}
+			on:keydown={keyDowController}
 		/>
 	{/if}
 	{text}

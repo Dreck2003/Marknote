@@ -21,7 +21,7 @@
     "src/**/*.ts",
     "src/**/*.js",
     "src/**/*.svelte"
-  ],
+, "src/lib/store/store/menus/file"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

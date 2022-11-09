@@ -1,6 +1,8 @@
 export enum MenuFileOptions {
+	nothing = "nothing",
 	createFile = "create-file",
 	deleteFile = "delete-file",
+	renameFile = "rename-file",
 }
 
 export enum MenuOptionsFolder {
@@ -9,4 +11,15 @@ export enum MenuOptionsFolder {
 	deleteFolder = "delete-folder",
 	renameFolder = "rename-folder",
 	createFile = "create-file",
+}
+
+export interface OptionMenuI {
+	keydown: (e: KeyboardEvent) => any;
+	handleKeyDown: any;
+	dispatchClick: (...arg: any[]) => any;
+	inputValue: string;
+	optionId: MenuOptionsFolder;
+	showInput: boolean;
+	withInput: boolean;
+	text: string;
 }

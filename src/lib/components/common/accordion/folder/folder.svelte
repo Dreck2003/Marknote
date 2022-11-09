@@ -1,20 +1,26 @@
 <script lang="ts">
 	import ChevronIcon from "../../../svg/chevron-icon.svelte";
 	import File from "./file.svelte";
-	import type { FolderContent } from "../../../../interfaces/files/files";
-	import Dots from "../../../svg/dots.svelte";
+	import type {
+		FileContent,
+		FolderContent,
+	} from "../../../../interfaces/files/files";
 	export let content: FolderContent;
 	export let expanded = false;
 	export let padding = false;
 	export let click = (e: MouseEvent, height: number) => {};
-	export let handleShowMenu = (
+	export let handleFolderMenu = (
 		e: MouseEvent,
 		folder: { id: symbol; path: string; title: string }
+	) => {};
+	export let handleFileMenu = (
+		e: MouseEvent,
+		folderId: symbol,
+		file: FileContent
 	) => {};
 	const handleClickFolder = (e: MouseEvent) => {
 		click(e, 30);
 	};
-	let showMenu = false;
 	let showDots = false;
 </script>
 
@@ -27,10 +33,16 @@
 		on:keydown
 		on:mouseover={() => (showDots ? null : (showDots = true))}
 		on:focus
+		on:contextmenu={(e) => {
+			e.preventDefault();
+			handleFolderMenu(e, {
+				id: content.id,
+				path: content.path,
+				title: content.title,
+			});
+		}}
 		on:mouseleave={() => {
-			if (!showMenu) {
-				showDots ? (showDots = false) : null;
-			}
+			showDots ? (showDots = false) : null;
 		}}
 		class="grid a-i-center"
 		style="padding-left: {padding
@@ -48,40 +60,29 @@
 		<span class="ellipsis">
 			{content.title}
 		</span>
-
-		<span
-			class="Dots flex"
-			style="visibility: {showDots ? 'visible' : 'hidden'};"
-			on:click={(e) => {
-				e.stopPropagation();
-				handleShowMenu(e, {
-					id: content.id,
-					path: content.path,
-					title: content.title,
-				});
-				showMenu = !showMenu;
-			}}
-			on:keydown
-		>
-			<Dots svgProps={{ fill: "red", class: "Dots flex" }} />
-		</span>
 	</header>
 	{#if expanded}
 		<section>
 			{#if content.folders.length}
 				{#each content.folders as folder}
-					<svelte:self content={{ ...folder }} padding {handleShowMenu} />
+					<svelte:self
+						content={{ ...folder }}
+						padding
+						{handleFolderMenu}
+						{handleFileMenu}
+					/>
 				{/each}
 			{/if}
 			{#if content.files.length}
 				{#each content.files as file}
 					<File
 						{padding}
-						name={file.name}
-						content={file.content}
-						path={file.path}
-						id={file.id}
+						{...file}
 						folderId={content.id}
+						on:contextmenu={(e) => {
+							e.preventDefault();
+							handleFileMenu(e, content.id, file);
+						}}
 					/>
 				{/each}
 			{/if}
