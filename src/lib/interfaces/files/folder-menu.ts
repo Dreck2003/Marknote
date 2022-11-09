@@ -1,6 +1,5 @@
 export enum MenuFileOptions {
 	nothing = "nothing",
-	createFile = "create-file",
 	deleteFile = "delete-file",
 	renameFile = "rename-file",
 }

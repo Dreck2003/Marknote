@@ -4,6 +4,7 @@ import {
 	readTextFile,
 	writeTextFile,
 	removeDir,
+	removeFile as removeSingleFile,
 } from "@tauri-apps/api/fs";
 import { basename } from "@tauri-apps/api/path";
 import type { FolderContent, FileEntry } from "../../interfaces/files/files";
@@ -112,4 +113,8 @@ export const renameFile = async (
 
 export const createFile = async (pathFolder: string): Promise<any> => {
 	await writeTextFile(pathFolder, "");
+};
+
+export const removeFile = async (path: string): Promise<any> => {
+	await removeSingleFile(path);
 };

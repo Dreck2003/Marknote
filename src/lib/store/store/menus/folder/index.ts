@@ -23,7 +23,6 @@ export const FolderMenuState = writable<FolderMenuI>({
 export const FolderMenuActions = {
 	reset() {
 		FolderMenuState.update((state) => ({
-			...state,
 			y: 0,
 			path: "",
 			title: "",

@@ -1,12 +1,11 @@
 <script lang="ts">
 	import FolderFileMenu from "./menu.svelte";
-	import OptionMenu from "./folder/option-menu.svelte";
+	import OptionMenu from "./common/option-menu.svelte";
 	import { FolderMenuState } from "../../../store/store/menus/folder/index";
 	import { MenuOptionsFolder } from "../../../interfaces/files/folder-menu";
 
 	export let visible = false;
 	let optionId = MenuOptionsFolder.nothing;
-	$: console.log(optionId);
 </script>
 
 <FolderFileMenu {visible} bind:y={$FolderMenuState.y} on:outclick>

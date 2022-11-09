@@ -1,6 +1,10 @@
 import { sep } from "@tauri-apps/api/path";
 import { createNewFolder, removeFolder } from "./../../../utils/files/folder";
-import { createFile, newFolder } from "./../../../utils/files/files";
+import {
+	createFile,
+	newFolder,
+	removeFile,
+} from "./../../../utils/files/files";
 import { OpenFolderEvent } from "../../../events/folder-events";
 import type { FolderContent } from "../../../interfaces/files/files";
 import { writable } from "svelte/store";
@@ -75,9 +79,59 @@ export const FolderStoreAction = {
 		}
 		const folderTree = getValueOfFolderStore();
 		const folder = await createNewFolder(folderId, folderTree, async (f) => ({
-			...f,
+			files: f.files,
+			folders: f.folders,
 			title: newName,
 			path: newPath,
+			id: Symbol(newName),
+		}));
+		FolderStore.set(folder);
+		return result.slice();
+	},
+	async removeFile(path: string, folderId: symbol, fileId: symbol) {
+		const folderTree = getValueOfFolderStore();
+		await removeFile(path);
+		const folder = await createNewFolder(folderId, folderTree, async (f) => {
+			return {
+				id: f.id,
+				folders: f.folders,
+				files: f.files.filter(({ id }) => id !== fileId),
+				path: f.path,
+				title: f.title,
+			};
+		});
+		FolderStore.set(folder);
+	},
+	async renameFile(
+		path: string,
+		newName: string,
+		folderId: symbol,
+		fileId: symbol
+	) {
+		const splitPath = path.split(sep);
+		splitPath.pop();
+		const newPath = splitPath.concat(newName).join(sep);
+		const result = await invoke<[boolean, string]>(
+			InvokeHandler.renameFileOrFolder,
+			{
+				path,
+				newPath,
+			}
+		);
+		if (!result[0]) {
+			return result.slice();
+		}
+		const folderTree = getValueOfFolderStore();
+		const folder = await createNewFolder(folderId, folderTree, async (f) => ({
+			id: f.id,
+			files: f.files.map((file) => {
+				return file.id === fileId
+					? { ...file, id: Symbol(newName), name: newName, path: newPath }
+					: { ...file };
+			}),
+			folders: f.folders,
+			title: f.title,
+			path: f.path,
 		}));
 		FolderStore.set(folder);
 		return result.slice();

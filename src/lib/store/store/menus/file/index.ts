@@ -3,7 +3,7 @@ import { writable } from "svelte/store";
 export interface FileMenuId {
 	y: number;
 	folderId: symbol;
-	fileId: symbol;
+	fileId?: symbol;
 	path: string;
 	title: string;
 }
@@ -12,7 +12,6 @@ export const FileMenuState = writable<FileMenuId>({
 	y: 0,
 	path: "",
 	title: "",
-	fileId: Symbol(""),
 	folderId: Symbol(""),
 });
 
@@ -26,7 +25,7 @@ export const FileMenuState = writable<FileMenuId>({
 export const FileMenuActions = {
 	reset() {
 		FileMenuState.update((state) => ({
-			...state,
+			folderId: Symbol(""),
 			y: 0,
 			path: "",
 			title: "",

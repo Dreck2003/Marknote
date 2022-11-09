@@ -23,8 +23,8 @@
 		folder: { id: symbol; path: string; title: string }
 	) => {
 		visibleMenu.file = false;
+		FileMenuActions.reset();
 		if (!$FolderMenuState.folderId || folder.id !== $FolderMenuState.folderId) {
-			console.log("folder");
 			!visibleMenu.folder && (() => (visibleMenu.folder = true))();
 			let target = e.target as HTMLElement;
 			return FolderMenuState.update((f) => ({
@@ -42,11 +42,10 @@
 		file: FileContent
 	) => {
 		visibleMenu.folder = false;
+		FolderMenuActions.reset();
 		if (!$FileMenuState.fileId || $FileMenuState.fileId !== file.id) {
-			console.log("file");
 			!visibleMenu.file && (() => (visibleMenu.file = true))();
 			let target = e.target as HTMLElement;
-			console.log(target.getBoundingClientRect());
 			return FileMenuState.update((f) => ({
 				...f,
 				fileId: file.id,

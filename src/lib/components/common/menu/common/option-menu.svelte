@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 	import { MenuOptionsFolder } from "../../../../interfaces/files/folder-menu";
-	export let inputValue: string = "";
+	export let inputValue = "";
 	export let withInput = false;
 	export let showInput = false;
 	export let dispatchClick = () => {};
@@ -9,6 +9,7 @@
 	export let handleKeyDown = (e: KeyboardEvent) => {};
 
 	let message = "";
+	$: !showInput && (() => (inputValue = ""))();
 
 	const dispatcher = createEventDispatcher();
 
@@ -17,9 +18,7 @@
 	const keyDowController = (e: KeyboardEvent) => {
 		handleKeyDown(e);
 		if (e.key === "Enter") {
-			console.log("Enter key pressed");
 			dispatcher("selectInput", { value: inputValue });
-			console.log("dispatch");
 		}
 	};
 </script>
