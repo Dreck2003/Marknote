@@ -3,6 +3,8 @@ import {
 	readDir,
 	readTextFile,
 	writeTextFile,
+	removeDir,
+	removeFile as removeSingleFile,
 } from "@tauri-apps/api/fs";
 import { basename } from "@tauri-apps/api/path";
 import type { FolderContent, FileEntry } from "../../interfaces/files/files";
@@ -69,11 +71,6 @@ export const recursiveReadFolder = async (
 	return { ...currentFolder, files: filesPromise, folders: folderPromise };
 };
 
-export const saveFile = async (path: string, content: string): Promise<any> => {
-	const res = await writeTextFile(path, content);
-	return res;
-};
-
 export const newFolder = (
 	folderId: symbol,
 	fileId: symbol,
@@ -91,4 +88,33 @@ export const newFolder = (
 	});
 
 	return { ...folderDir, folders };
+};
+
+export const removeFolder = async (path: string): Promise<any> => {
+	await removeDir(path);
+};
+
+// Files functions:
+
+export const saveFile = async (path: string, content: string): Promise<any> => {
+	const res = await writeTextFile(path, content);
+	return res;
+};
+
+export const renameFile = async (
+	path: string,
+	newName: string
+): Promise<void> => {
+	// const filePath = path.split(sep);
+	// const fileName = filePath.pop();
+	// console.log({ filePath: filePath.join(sep), newName, fileName });
+	// await renameSingleFile(path,newPath);
+};
+
+export const createFile = async (pathFolder: string): Promise<any> => {
+	await writeTextFile(pathFolder, "");
+};
+
+export const removeFile = async (path: string): Promise<any> => {
+	await removeSingleFile(path);
 };

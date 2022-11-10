@@ -2,13 +2,27 @@
 	import ChevronIcon from "../../../svg/chevron-icon.svelte";
 	import File from "./file.svelte";
 	import type { FolderContent } from "../../../../interfaces/files/files";
+	import {
+		getFileDataForMenu,
+		getFolderDataForMenu,
+		type FileMenuProps,
+		type FolderMenuProps,
+	} from "../../../../store/store/menus";
 	export let content: FolderContent;
 	export let expanded = false;
 	export let padding = false;
 	export let click = (e: MouseEvent, height: number) => {};
+	export let handleFolderMenu = (e: MouseEvent, folder: FolderMenuProps) => {};
+	export let parentFolders: string[];
+	export let handleFileMenu = (
+		e: MouseEvent,
+		folderId: symbol,
+		file: FileMenuProps
+	) => {};
 	const handleClickFolder = (e: MouseEvent) => {
 		click(e, 30);
 	};
+	let showDots = false;
 </script>
 
 <div class="Folder_Content" on:click={handleClickFolder} on:keydown>
@@ -18,6 +32,15 @@
 			expanded = !expanded;
 		}}
 		on:keydown
+		on:mouseover={() => (showDots ? null : (showDots = true))}
+		on:focus
+		on:contextmenu={(e) => {
+			e.preventDefault();
+			handleFolderMenu(e, getFolderDataForMenu(content, parentFolders));
+		}}
+		on:mouseleave={() => {
+			showDots ? (showDots = false) : null;
+		}}
 		class="grid a-i-center"
 		style="padding-left: {padding
 			? '0.7em'
@@ -31,7 +54,7 @@
 				position={expanded ? "down" : "right"}
 			/>
 		</span>
-		<span>
+		<span class="ellipsis">
 			{content.title}
 		</span>
 	</header>
@@ -39,18 +62,32 @@
 		<section>
 			{#if content.folders.length}
 				{#each content.folders as folder}
-					<svelte:self content={{ ...folder }} padding />
+					<svelte:self
+						content={{ ...folder }}
+						padding
+						{handleFolderMenu}
+						{handleFileMenu}
+						parentFolders={content.folders.map(({ title }) => title)}
+					/>
 				{/each}
 			{/if}
 			{#if content.files.length}
 				{#each content.files as file}
 					<File
 						{padding}
-						name={file.name}
-						content={file.content}
-						path={file.path}
-						id={file.id}
+						{...file}
 						folderId={content.id}
+						on:contextmenu={(e) => {
+							e.preventDefault();
+							handleFileMenu(
+								e,
+								content.id,
+								getFileDataForMenu(
+									file,
+									content.files.map(({ name }) => name)
+								)
+							);
+						}}
 					/>
 				{/each}
 			{/if}
@@ -73,6 +110,9 @@
 		cursor: pointer;
 		padding-left: 1em;
 		height: 30px;
-		grid-template-columns: 20% 80%;
+		grid-template-columns: 20% 60% 20%;
+	}
+	:global(.Wrapper_Menu) {
+		display: flex;
 	}
 </style>

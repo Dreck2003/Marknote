@@ -4,13 +4,12 @@
 	import FileArea from "./lib/components/layout/file-area/file-area.svelte";
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 	import { FileEvents } from "./lib/events/events";
-	import { OpenFolderEvent } from "./lib/events/file-events";
-	import { FolderStore } from "./lib/store/store";
+	import { FolderStoreAction } from "./lib/store/store";
 
 	onMount(async () => {
 		const handleReadFile = async () => {
 			try {
-				$FolderStore = await OpenFolderEvent();
+				await FolderStoreAction.OpenFolder();
 			} catch (error) {
 				alert("Not posible open files");
 				console.log({ error });
