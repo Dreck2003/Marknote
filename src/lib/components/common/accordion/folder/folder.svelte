@@ -1,22 +1,23 @@
 <script lang="ts">
 	import ChevronIcon from "../../../svg/chevron-icon.svelte";
 	import File from "./file.svelte";
-	import type {
-		FileContent,
-		FolderContent,
-	} from "../../../../interfaces/files/files";
+	import type { FolderContent } from "../../../../interfaces/files/files";
+	import {
+		getFileDataForMenu,
+		getFolderDataForMenu,
+		type FileMenuProps,
+		type FolderMenuProps,
+	} from "../../../../store/store/menus";
 	export let content: FolderContent;
 	export let expanded = false;
 	export let padding = false;
 	export let click = (e: MouseEvent, height: number) => {};
-	export let handleFolderMenu = (
-		e: MouseEvent,
-		folder: { id: symbol; path: string; title: string }
-	) => {};
+	export let handleFolderMenu = (e: MouseEvent, folder: FolderMenuProps) => {};
+	export let parentFolders: string[];
 	export let handleFileMenu = (
 		e: MouseEvent,
 		folderId: symbol,
-		file: FileContent
+		file: FileMenuProps
 	) => {};
 	const handleClickFolder = (e: MouseEvent) => {
 		click(e, 30);
@@ -35,11 +36,7 @@
 		on:focus
 		on:contextmenu={(e) => {
 			e.preventDefault();
-			handleFolderMenu(e, {
-				id: content.id,
-				path: content.path,
-				title: content.title,
-			});
+			handleFolderMenu(e, getFolderDataForMenu(content, parentFolders));
 		}}
 		on:mouseleave={() => {
 			showDots ? (showDots = false) : null;
@@ -70,6 +67,7 @@
 						padding
 						{handleFolderMenu}
 						{handleFileMenu}
+						parentFolders={content.folders.map(({ title }) => title)}
 					/>
 				{/each}
 			{/if}
@@ -81,7 +79,14 @@
 						folderId={content.id}
 						on:contextmenu={(e) => {
 							e.preventDefault();
-							handleFileMenu(e, content.id, file);
+							handleFileMenu(
+								e,
+								content.id,
+								getFileDataForMenu(
+									file,
+									content.files.map(({ name }) => name)
+								)
+							);
 						}}
 					/>
 				{/each}

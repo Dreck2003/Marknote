@@ -4,8 +4,13 @@
 	import { FileMenuState } from "../../../store/store/menus/file";
 	import { MenuFileOptions } from "../../../interfaces/files/folder-menu";
 	import { FolderStoreAction } from "../../../store/store/folder-store";
+	import {
+		FileNamingError,
+		validateFileName,
+	} from "../../../utils/errors/naming-errors";
 
 	export let visible = false;
+	export let handleOutClick = () => {};
 	let optionId = MenuFileOptions.nothing;
 
 	const handleOptionsSelected = (v: string) => {
@@ -49,9 +54,20 @@
 	};
 </script>
 
-<FolderFileMenu {visible} bind:y={$FileMenuState.y} on:outclick>
+<FolderFileMenu
+	{visible}
+	bind:y={$FileMenuState.y}
+	on:outclick={() => {
+		optionId = MenuFileOptions.nothing;
+		handleOutClick();
+	}}
+>
 	<OptionMenu
-		handleKeyDown={() => () => {}}
+		handleKeyDown={(_, v) => {
+			if (v.length <= 0) {
+				return [true, FileNamingError.emptyName];
+			}
+		}}
 		dispatchClick={() => {
 			optionId = MenuFileOptions.renameFile;
 		}}
@@ -60,13 +76,22 @@
 		on:selectInput={(e) => {
 			handleOptionsSelected(e.detail.value);
 		}}
+		handleInput={(v) => {
+			if ($FileMenuState.files.includes(v)) {
+				return [true, FileNamingError.fileExist];
+			}
+
+			return validateFileName(v);
+		}}
 		withInput
 	/>
 	<OptionMenu
-		handleKeyDown={() => () => {}}
-		dispatchClick={() => {
+		dispatchClick={async () => {
 			optionId = MenuFileOptions.deleteFile;
-			handleOptionsSelected("null");
+			let confirmed = await confirm("Are you sure");
+			if (confirmed) {
+				handleOptionsSelected("null");
+			}
 		}}
 		text={"Delete File"}
 	/>

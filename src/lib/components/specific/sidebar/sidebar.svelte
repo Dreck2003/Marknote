@@ -8,8 +8,9 @@
 		FileMenuState,
 		FolderMenuActions,
 		FileMenuActions,
+		type FileMenuProps,
+		type FolderMenuProps,
 	} from "../../../store/store/menus";
-	import type { FileContent } from "../../../interfaces/files/files";
 	import FileMenu from "../../common/menu/file-menu.svelte";
 	let y = 0;
 	const handleClickFolder = (e: MouseEvent, height: number) => {
@@ -18,10 +19,7 @@
 
 	let visibleMenu = { folder: false, file: false };
 
-	const handleFolderMenu = (
-		e: MouseEvent,
-		folder: { id: symbol; path: string; title: string }
-	) => {
+	const handleFolderMenu = (e: MouseEvent, folder: FolderMenuProps) => {
 		visibleMenu.file = false;
 		FileMenuActions.reset();
 		if (!$FolderMenuState.folderId || folder.id !== $FolderMenuState.folderId) {
@@ -31,6 +29,9 @@
 				folderId: folder.id,
 				path: folder.path,
 				title: folder.title,
+				files: folder.files,
+				folders: folder.folders,
+				parentFolders: folder.parentFolders,
 				y: target.getBoundingClientRect().y + 10,
 			}));
 		}
@@ -39,7 +40,7 @@
 	const handleFileMenu = (
 		e: MouseEvent,
 		folderId: symbol,
-		file: FileContent
+		file: FileMenuProps
 	) => {
 		visibleMenu.folder = false;
 		FolderMenuActions.reset();
@@ -50,6 +51,7 @@
 				...f,
 				fileId: file.id,
 				folderId,
+				files: file.files,
 				y: target.getBoundingClientRect().y + 10,
 				path: file.path,
 				title: file.name,
@@ -70,17 +72,18 @@
 			click={handleClickFolder}
 			{handleFolderMenu}
 			{handleFileMenu}
+			parentFolders={[]}
 		/>
 		<FolderMenu
 			bind:visible={visibleMenu.folder}
-			on:outclick={() => {
+			handleOutClick={() => {
 				visibleMenu.folder = false;
 				FolderMenuActions.reset();
 			}}
 		/>
 		<FileMenu
 			bind:visible={visibleMenu.file}
-			on:outclick={() => {
+			handleOutClick={() => {
 				visibleMenu.file = false;
 				FileMenuActions.reset();
 			}}
