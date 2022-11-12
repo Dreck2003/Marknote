@@ -21,11 +21,20 @@
 			unlisten();
 		};
 	});
+
+	let seeMarkdown = false;
+	let markdown = "<div>ESTE ES UN <b>  DIV</b></div>";
 </script>
 
 <main class="grid" style="height: 100%;">
-	<Sidebar />
-	<FileArea />
+	<Sidebar bind:seeMarkdown bind:markdown />
+	{#if seeMarkdown}
+		<div style="border: 2px soldid rebeccapurple;">
+			{@html markdown}
+		</div>
+	{:else}
+		<FileArea />
+	{/if}
 </main>
 
 <style>
