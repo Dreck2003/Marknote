@@ -2,6 +2,7 @@ use std::{fs::rename, io::ErrorKind};
 
 use serde::{Deserialize, Serialize};
 
+use crate::parser::{get_blocks_lines::parse_lines, mark_from_lines};
 #[derive(Serialize, Deserialize)]
 pub struct RenameValue(bool, String);
 
@@ -24,4 +25,14 @@ pub fn rename_file_or_folder(path: &str, new_path: &str) -> RenameValue {
             }
         }
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct MarkdownText(String);
+
+#[tauri::command]
+pub fn convert_str_to_markdown(lines: Vec<&str>) -> MarkdownText {
+    let type_lines = parse_lines(&lines);
+    let markdown = mark_from_lines(type_lines);
+    return MarkdownText(markdown);
 }

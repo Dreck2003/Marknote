@@ -5,6 +5,7 @@
 
 mod commands;
 mod menu;
+mod parser;
 
 fn main() {
     tauri::Builder::default()
@@ -12,7 +13,10 @@ fn main() {
         .on_menu_event(|event| {
             menu::handle_event_menu(&event);
         })
-        .invoke_handler(tauri::generate_handler![commands::rename_file_or_folder])
+        .invoke_handler(tauri::generate_handler![
+            commands::rename_file_or_folder,
+            commands::convert_str_to_markdown
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
