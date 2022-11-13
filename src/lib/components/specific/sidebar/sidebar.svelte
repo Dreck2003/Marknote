@@ -64,7 +64,6 @@
 	const handleConvertMarkdown = () => {
 		FileReaderActions.convertMarkDown()
 			.then((res) => {
-				console.log("all ok: ", res);
 				seeMarkdown = !seeMarkdown;
 				markdown = res;
 			})
