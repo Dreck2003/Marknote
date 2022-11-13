@@ -53,10 +53,10 @@ where
     T: ToString,
 {
     let code_line_values = codes.iter().fold("".to_string(), |acc, code_line| {
-        format!("{acc} {}", &code_line.to_string()[4..])
+        format!("{acc} {}\n", &code_line.to_string()[4..])
     });
 
-    return format!("<code>{code_line_values}</code>");
+    return format!("<pre><code>{code_line_values}</code></pre>");
 }
 
 #[allow(dead_code)]
@@ -66,7 +66,7 @@ where
 {
     let code_line_values = codes.iter().fold("".to_string(), |acc, code_line| {
         let line = get_line_without_white_space('>', code_line.as_ref());
-        format!("{acc} {line}")
+        format!("{acc} {line}<br/>")
     });
 
     return format!("<blockquote>{code_line_values}</blockquote>");
@@ -111,7 +111,7 @@ where
                     if index - spaces == 2 {
                         // If the diference is 2  then is a list
                         let ul = get_mark_list(&list[i..], type_list, spaces + WHITE_SPACES as i32);
-                        string_v.push_str(&format!("<li>{}</li>", ul.1));
+                        string_v.push_str(&format!("{}", ul.1));
                         i += ul.0 as usize;
                         lap_count += 1;
 

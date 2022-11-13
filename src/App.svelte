@@ -2,6 +2,7 @@
 	import { listen } from "@tauri-apps/api/event";
 	import { onMount } from "svelte";
 	import FileArea from "./lib/components/layout/file-area/file-area.svelte";
+	import MarkdowView from "./lib/components/specific/render-markdown/markdow-view.svelte";
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 	import { FileEvents } from "./lib/events/events";
 	import { FolderStoreAction } from "./lib/store/store";
@@ -23,15 +24,13 @@
 	});
 
 	let seeMarkdown = false;
-	let markdown = "<div>ESTE ES UN <b>  DIV</b></div>";
+	let markdown = "";
 </script>
 
 <main class="grid" style="height: 100%;">
 	<Sidebar bind:seeMarkdown bind:markdown />
 	{#if seeMarkdown}
-		<div style="border: 2px soldid rebeccapurple;">
-			{@html markdown}
-		</div>
+		<MarkdowView bind:markdown />
 	{:else}
 		<FileArea />
 	{/if}

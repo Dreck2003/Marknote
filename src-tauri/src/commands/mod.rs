@@ -32,10 +32,7 @@ pub struct MarkdownText(String);
 
 #[tauri::command]
 pub fn convert_str_to_markdown(lines: Vec<&str>) -> MarkdownText {
-    println!("lines: {:?}", lines);
     let type_lines = parse_lines(&lines);
-    println!("type_lines: {:?}", type_lines);
     let markdown = mark_from_lines(type_lines);
-    println!("markdown: {:?}", markdown);
     return MarkdownText(markdown);
 }

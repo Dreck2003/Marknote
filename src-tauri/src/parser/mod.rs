@@ -35,7 +35,7 @@ pub fn mark_from_lines(group_lines: Vec<(TypeLine, Vec<String>)>) -> String {
                 string_v.push_str(&p);
             }
             TypeLine::LineBreak => {
-                string_v.push_str("<br/>");
+                string_v.push_str("");
             }
         }
     }
