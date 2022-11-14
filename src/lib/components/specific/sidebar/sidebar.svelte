@@ -79,7 +79,7 @@
 		<button on:click={handleConvertMarkdown}> See markdown </button>
 	</div>
 	<div style="position: relative;">
-		<ShadowFolder bind:y style="transform: translate(0px,{y ?? 0}px);" />
+		<!-- <ShadowFolder bind:y style="transform: translate(0px,{y ?? 0}px);" /> -->
 		<Folder
 			expanded
 			content={$FolderStore}
@@ -87,6 +87,7 @@
 			{handleFolderMenu}
 			{handleFileMenu}
 			parentFolders={[]}
+			isRoot
 		/>
 		<FolderMenu
 			bind:visible={visibleMenu.folder}

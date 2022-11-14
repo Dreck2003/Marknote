@@ -51,6 +51,12 @@
 .text-gray-600 {
 	color: hsl(var(--clr-gray-600));
 }
+.text-gray-700 {
+	color: hsl(var(--clr-gray-700));
+}
+.text-gray-800 {
+	color: hsl(var(--clr-gray-800));
+}
 
 /* background-color-gray   */
 .bg-gray-100 {
@@ -71,6 +77,12 @@
 .bg-gray-600 {
 	background-color: hsl(var(--clr-gray-600));
 }
+.bg-gray-700 {
+	background-color: hsl(var(--clr-gray-700));
+}
+.bg-gray-800 {
+	background-color: hsl(var(--clr-gray-800));
+}
 
 /*   color-white   */
 .text-white {
@@ -86,4 +98,90 @@
 }
 .bg-white-100 {
 	background-color: hsl(var(--clr-white-100));
+}
+
+/*   fill-green   */
+.fill-green-100 {
+	fill: hsl(var(--clr-green-100));
+}
+.fill-green-200 {
+	fill: hsl(var(--clr-green-200));
+}
+.fill-green-300 {
+	fill: hsl(var(--clr-green-300));
+}
+.fill-green-400 {
+	fill: hsl(var(--clr-green-400));
+}
+.fill-green-500 {
+	fill: hsl(var(--clr-green-500));
+}
+
+/*   fill-gray   */
+.fill-gray-100 {
+	fill: hsl(var(--clr-gray-100));
+}
+.fill-gray-200 {
+	fill: hsl(var(--clr-gray-200));
+}
+.fill-gray-300 {
+	fill: hsl(var(--clr-gray-300));
+}
+.fill-gray-400 {
+	fill: hsl(var(--clr-gray-400));
+}
+.fill-gray-500 {
+	fill: hsl(var(--clr-gray-500));
+}
+.fill-gray-600 {
+	fill: hsl(var(--clr-gray-600));
+}
+.fill-gray-700 {
+	fill: hsl(var(--clr-gray-700));
+}
+.fill-gray-800 {
+	fill: hsl(var(--clr-gray-800));
+}
+
+/*   stroke-green   */
+.stroke-green-100 {
+	stroke: hsl(var(--clr-green-100));
+}
+.stroke-green-200 {
+	stroke: hsl(var(--clr-green-200));
+}
+.stroke-green-300 {
+	stroke: hsl(var(--clr-green-300));
+}
+.stroke-green-400 {
+	stroke: hsl(var(--clr-green-400));
+}
+.stroke-green-500 {
+	stroke: hsl(var(--clr-green-500));
+}
+
+/*   stroke-gray   */
+.stroke-gray-100 {
+	stroke: hsl(var(--clr-gray-100));
+}
+.stroke-gray-200 {
+	stroke: hsl(var(--clr-gray-200));
+}
+.stroke-gray-300 {
+	stroke: hsl(var(--clr-gray-300));
+}
+.stroke-gray-400 {
+	stroke: hsl(var(--clr-gray-400));
+}
+.stroke-gray-500 {
+	stroke: hsl(var(--clr-gray-500));
+}
+.stroke-gray-600 {
+	stroke: hsl(var(--clr-gray-600));
+}
+.stroke-gray-700 {
+	stroke: hsl(var(--clr-gray-700));
+}
+.stroke-gray-800 {
+	stroke: hsl(var(--clr-gray-800));
 }
