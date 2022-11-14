@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Folder from "../../common/accordion/folder/folder.svelte";
-	import ShadowFolder from "../../common/accordion/folder/shadow-folder.svelte";
+	// import ShadowFolder from "../../common/accordion/folder/shadow-folder.svelte";
 	import { FileReaderActions, FolderStore } from "../../../store/store";
-	import FolderMenu from "../../common/menu/folder-menu.svelte";
 	import {
 		FolderMenuState,
 		FileMenuState,
@@ -12,6 +11,7 @@
 		type FolderMenuProps,
 	} from "../../../store/store/menus";
 	import FileMenu from "../../common/menu/file-menu.svelte";
+	import FolderMenu from "../../common/menu/folder-menu.svelte";
 	let y = 0;
 	export let seeMarkdown = false;
 	export let markdown: string;
@@ -34,7 +34,7 @@
 				files: folder.files,
 				folders: folder.folders,
 				parentFolders: folder.parentFolders,
-				y: target.getBoundingClientRect().y + 10,
+				y: target.getBoundingClientRect().y,
 			}));
 		}
 	};
@@ -54,7 +54,7 @@
 				fileId: file.id,
 				folderId,
 				files: file.files,
-				y: target.getBoundingClientRect().y + 10,
+				y: target.getBoundingClientRect().y,
 				path: file.path,
 				title: file.name,
 			}));
@@ -81,7 +81,6 @@
 	<div style="position: relative;">
 		<!-- <ShadowFolder bind:y style="transform: translate(0px,{y ?? 0}px);" /> -->
 		<Folder
-			expanded
 			content={$FolderStore}
 			click={handleClickFolder}
 			{handleFolderMenu}

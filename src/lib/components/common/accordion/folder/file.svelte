@@ -36,7 +36,7 @@
 		svgProps={{ width: 17, height: 17 }}
 		className="fill-gray-400 stroke-gray-100"
 	/>
-	<span>{name}</span>
+	<span class="ellipsis">{name}</span>
 </div>
 
 <style>

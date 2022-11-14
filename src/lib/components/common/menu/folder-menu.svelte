@@ -1,9 +1,9 @@
 <script lang="ts">
-	import FolderFileMenu from "./menu.svelte";
-	import OptionMenu from "./common/option-menu.svelte";
-	import { FolderMenuState } from "../../../store/store/menus/folder/index";
-	import { MenuOptionsFolder } from "../../../interfaces/files/folder-menu";
-	import { FolderStoreAction } from "../../../store/store/";
+	import { FolderStoreAction } from "../../../store/store";
+	import { FolderMenuState } from "../../../store/store/menus";
+	import { MenuOptionsFolder } from "../../../interfaces";
+	import OptionInput from "./options/option-input.svelte";
+	import { Menu, OptionMenu } from "./principal/index";
 	import {
 		FileNamingError,
 		FolderNamingError,
@@ -13,7 +13,8 @@
 
 	export let visible = false;
 	export let handleOutClick = () => {};
-	let optionId = MenuOptionsFolder.nothing;
+
+	let optionId = MenuOptionsFolder.nothing; // Nothing for default
 
 	const handleOptionsSelected = (v: string) => {
 		switch (optionId) {
@@ -89,7 +90,7 @@
 	};
 </script>
 
-<FolderFileMenu
+<Menu
 	{visible}
 	bind:y={$FolderMenuState.y}
 	on:outclick={() => {
@@ -97,75 +98,65 @@
 		handleOutClick();
 	}}
 >
-	<OptionMenu
-		handleKeyDown={(_, v) => {
-			if (v.length <= 0) {
-				return [true, FolderNamingError.EmptyName];
-			}
-		}}
-		dispatchClick={() => {
-			optionId = MenuOptionsFolder.createFolder;
-		}}
-		showInput={optionId === MenuOptionsFolder.createFolder}
-		text={"Create Folder"}
-		withInput
-		on:selectInput={(e) => handleOptionsSelected(e.detail.value)}
+	<OptionInput
+		text="Create Folder"
+		selected={optionId === MenuOptionsFolder.createFolder}
 		handleInput={(v) => {
 			if ($FolderMenuState.folders.includes(v)) {
 				return [true, FolderNamingError.folderExist];
 			}
 			return validateFolderName(v);
 		}}
-	/>
-	<OptionMenu
 		handleKeyDown={(_, v) => {
 			if (v.length <= 0) {
 				return [true, FolderNamingError.EmptyName];
 			}
 		}}
-		dispatchClick={() => {
-			optionId = MenuOptionsFolder.createFile;
-		}}
-		showInput={optionId === MenuOptionsFolder.createFile}
-		text={"Create File"}
 		on:selectInput={(e) => handleOptionsSelected(e.detail.value)}
-		withInput
+		on:click={() => (optionId = MenuOptionsFolder.createFolder)}
+	/>
+	<OptionInput
+		text="Create File"
+		selected={optionId === MenuOptionsFolder.createFile}
 		handleInput={(v) => {
 			if ($FolderMenuState.files.includes(v)) {
 				return [true, FileNamingError.fileExist];
 			}
 			return validateFileName(v);
 		}}
-	/>
-	<OptionMenu
-		dispatchClick={async () => {
-			optionId = MenuOptionsFolder.deleteFolder;
-			let confirmed = await confirm("Are you sure?");
-			console.log({ confirmed });
-			if (confirmed) {
-				handleOptionsSelected("null");
-			}
-		}}
-		text={"Delete Folder"}
-	/>
-	<OptionMenu
 		handleKeyDown={(_, v) => {
 			if (v.length <= 0) {
 				return [true, FolderNamingError.EmptyName];
 			}
 		}}
-		dispatchClick={() => {
-			optionId = MenuOptionsFolder.renameFolder;
-		}}
-		showInput={optionId === MenuOptionsFolder.renameFolder}
-		text={"Rename Folder"}
 		on:selectInput={(e) => handleOptionsSelected(e.detail.value)}
-		withInput
+		on:click={() => (optionId = MenuOptionsFolder.createFile)}
+	/>
+	<OptionMenu
+		text="Delete Folder"
+		on:click={async () => {
+			optionId = MenuOptionsFolder.deleteFolder;
+			let confirmed = await confirm("Are you sure?");
+			if (confirmed) {
+				handleOptionsSelected("null");
+			}
+		}}
+	/>
+	<OptionInput
+		text="Rename Folder"
+		selected={optionId === MenuOptionsFolder.renameFolder}
 		handleInput={(v) => {
 			if ($FolderMenuState.folders.includes(v)) {
 				return [true, FolderNamingError.folderExist];
 			}
 			return validateFolderName(v);
 		}}
+		handleKeyDown={(_, v) => {
+			if (v.length <= 0) {
+				return [true, FolderNamingError.EmptyName];
+			}
+		}}
+		on:selectInput={(e) => handleOptionsSelected(e.detail.value)}
+		on:click={() => (optionId = MenuOptionsFolder.renameFolder)}
 	/>
-</FolderFileMenu>
+</Menu>

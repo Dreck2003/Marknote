@@ -57,7 +57,6 @@
 				{#each content.folders as folder}
 					<svelte:self
 						content={{ ...folder }}
-						padding
 						{handleFolderMenu}
 						{handleFileMenu}
 						parentFolders={content.folders.map(({ title }) => title)}
