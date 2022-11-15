@@ -22,3 +22,11 @@ export enum WHITE_COLORS {
 	White000 = "0, 0%, 100%",
 	White100 = "135, 14%, 98%",
 }
+
+export enum RED_COLORS {
+	Red100 = "0, 100%, 94%",
+	Red200 = "0, 52%, 76%",
+	Red300 = "0, 52%, 66%",
+	Red400 = "0, 45%, 55%",
+	Red500 = "0, 53%, 48%",
+}

@@ -10,11 +10,18 @@
 		validateFileName,
 		validateFolderName,
 	} from "../../../utils/errors/naming-errors";
+	import { COLORS } from "../../../interfaces/styles";
 
 	export let visible = false;
 	export let handleOutClick = () => {};
 
 	let optionId = MenuOptionsFolder.nothing; // Nothing for default
+
+	$: !visible && (() => (optionId = MenuOptionsFolder.nothing))();
+	const reset = () => {
+		visible = false;
+		optionId = MenuOptionsFolder.nothing;
+	};
 
 	const handleOptionsSelected = (v: string) => {
 		switch (optionId) {
@@ -31,7 +38,7 @@
 						console.log(e);
 					})
 					.finally(() => {
-						visible = false;
+						reset();
 					});
 
 				break;
@@ -49,7 +56,7 @@
 						console.log(e);
 					})
 					.finally(() => {
-						visible = false;
+						reset();
 					});
 				break;
 			}
@@ -66,7 +73,7 @@
 						console.log(e);
 					})
 					.finally(() => {
-						visible = false;
+						reset();
 					});
 				break;
 			}
@@ -82,7 +89,7 @@
 						console.log(e);
 					})
 					.finally(() => {
-						visible = false;
+						reset();
 					});
 				break;
 			}
@@ -97,6 +104,7 @@
 		optionId = MenuOptionsFolder.nothing;
 		handleOutClick();
 	}}
+	customStyle={{ bg: `hsla(${COLORS["Green300"]})`, color: "white" }}
 >
 	<OptionInput
 		text="Create Folder"
@@ -134,6 +142,8 @@
 	/>
 	<OptionMenu
 		text="Delete Folder"
+		selected={optionId == MenuOptionsFolder.deleteFolder}
+		hover={`hsla(${COLORS["Green200"]},60%)`}
 		on:click={async () => {
 			optionId = MenuOptionsFolder.deleteFolder;
 			let confirmed = await confirm("Are you sure?");
@@ -160,3 +170,14 @@
 		on:click={() => (optionId = MenuOptionsFolder.renameFolder)}
 	/>
 </Menu>
+
+<style>
+	:global(.Custom_Menu) {
+		color: white;
+		border: 1px solid rgba(68, 103, 92, 0.26);
+	}
+
+	:global(.select-Delete) {
+		background-color: red;
+	}
+</style>

@@ -10,10 +10,13 @@
 		FolderNamingError,
 		validateFileName,
 	} from "../../../utils/errors/naming-errors";
+	import { COLORS } from "../../../interfaces/styles";
 
 	let optionId = MenuFileOptions.nothing;
 	export let visible = false;
 	export let handleOutClick = () => {};
+
+	$: !visible && (() => (optionId = MenuFileOptions.nothing))();
 
 	const handleOptionsSelected = (v: string) => {
 		switch (optionId) {
@@ -63,6 +66,7 @@
 		optionId = MenuFileOptions.nothing;
 		handleOutClick();
 	}}
+	customStyle={{ bg: `hsla(${COLORS["Green300"]})`, color: "white" }}
 >
 	<OptionInput
 		text="Rename File"
@@ -82,6 +86,8 @@
 		on:click={() => (optionId = MenuFileOptions.renameFile)}
 	/>
 	<Option
+		selected={optionId == MenuFileOptions.deleteFile}
+		hover={`hsla(${COLORS["Green200"]},60%)`}
 		on:click={async () => {
 			optionId = MenuFileOptions.deleteFile;
 			let confirmed = await confirm("Are you sure");

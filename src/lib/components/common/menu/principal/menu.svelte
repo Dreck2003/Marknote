@@ -1,18 +1,19 @@
 <script lang="ts">
-	import { COLORS } from "../../../../interfaces/styles";
 	import { clickOutside } from "../../../../utils/custom-events";
 	export let visible = false;
 	export let y = 0;
-	export let color = COLORS["Green300"];
+	export let className = "";
+	export let customStyle = { bg: "", color: "black" };
 </script>
 
 {#if visible}
 	<div
-		class="Custom_Menu flex bg-white-100"
+		class="Custom_Menu {className}"
 		style:top={y + "px"}
 		use:clickOutside
 		on:outclick
-		style:--bg={color}
+		style:--bg={customStyle.bg}
+		style:--color={customStyle.color}
 	>
 		<slot />
 	</div>
@@ -20,11 +21,11 @@
 
 <style>
 	.Custom_Menu {
-		border: 1px solid slateblue;
+		background-color: var(--bg);
 		border-radius: 4px;
 		cursor: pointer;
 		flex-direction: column;
-		padding: 0.3em 0em;
+		/* padding: 0.3em 0em; */
 		position: absolute;
 		right: -1.3em;
 		z-index: 99;

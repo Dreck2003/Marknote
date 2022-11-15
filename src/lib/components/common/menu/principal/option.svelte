@@ -2,34 +2,47 @@
 	export let selected = false;
 	export let text = "";
 	export let contentClass = "";
+	export let optionClass = "";
+	export let hover = "";
+	export let style = { parent: "", content: "" };
 </script>
 
-<div class:selected class="Option" on:mouseleave>
+<div
+	class:selected
+	class="Option {optionClass}"
+	on:mouseleave
+	style:--hover={hover}
+	style={style.parent}
+>
 	<span on:click on:keydown on:mousemove>
 		{text}
 	</span>
-	{#if selected}
-		<div class="Option-Content {contentClass}">
+	{#if selected && $$slots.default}
+		<div class="Option-Content {contentClass}" style={style.content}>
 			<slot />
 		</div>
 	{/if}
 </div>
 
 <style>
-	.Option.selected {
-		background-color: red;
-	}
 	.Option {
-		border: 1px solid blue;
 		position: relative;
+		transition: background-color 100ms ease;
+	}
+
+	.Option.selected {
+		background-color: var(--hover);
+	}
+
+	.Option:hover {
+		background-color: var(--hover);
 	}
 
 	.Option-Content {
-		border: 1px solid green;
 		padding: 0.3em;
 		position: absolute;
 		right: 0;
 		top: 0;
-		transform: translate(100%, 0%);
+		transform: translate(100.5%, 0%);
 	}
 </style>

@@ -8,7 +8,7 @@ export const enum FileNamingError {
 export enum FolderNamingError {
 	folderExist = "A folder with the same name already exists.",
 	EmptyName = "You must provide a name for the folder.",
-	WithDot = "The file caanot have dot.",
+	WithDot = "The Folder cannot have dot.",
 }
 
 type ExistError = boolean;
