@@ -586,7 +586,7 @@
 	};
 </script>
 
-<section class="bg-white-100" bind:this={codeArea}>
+<section class="Section-Code bg-white" bind:this={codeArea}>
 	<div class="display_code grid">
 		<!-- <div class="code-index">
 			{#each textSplit as line, i}

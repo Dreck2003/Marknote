@@ -133,7 +133,7 @@ export const FolderStoreAction = {
 			}
 		);
 		if (!result[0]) {
-			return result.slice();
+			throw new Error(result[1]);
 		}
 		const folderTree = getValueOfFolderStore();
 		const folder = await createNewFolder(folderId, folderTree, async (f) => ({
@@ -148,7 +148,7 @@ export const FolderStoreAction = {
 			path: f.path,
 		}));
 		FolderStore.set(folder);
-		return result.slice();
+		return result[1];
 	},
 	async createFile(pathFolder: string, folderId: symbol, fileName: string) {
 		const newPath = pathFolder + sep + fileName + ".md";

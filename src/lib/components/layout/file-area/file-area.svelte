@@ -10,6 +10,7 @@
 	import CodeArea from "../../specific/code-area/code_area.svelte";
 	import TopBar from "../../bars/top-bar.svelte";
 	import MarkdowView from "../../specific/render-markdown/markdow-view.svelte";
+	import FileIcon from "../../svg/file-icon.svelte";
 	const handleSaveFile = (event: CustomEvent) => {
 		saveFile($FileReaderStore.path, event.detail.content)
 			.then((e) => {
@@ -37,7 +38,13 @@
 
 <section class="File_Area" tabindex="-1">
 	{#if $FileReaderStore.isEmpty}
-		<b>Not File Selected</b>
+		<div class="Empty-Area flex flex-c flex-d-c">
+			<h3 class="text-green-300">Choose a file</h3>
+			<FileIcon
+				svgProps={{ height: "8em", width: "8em" }}
+				className="fill-green-200 stroke-green-300"
+			/>
+		</div>
 	{:else}
 		<section>
 			<TopBar
@@ -69,6 +76,15 @@
 	.File_Area {
 		max-height: 100vh;
 		height: 100vh;
-		overflow: scroll;
+		overflow: auto;
+	}
+
+	.Empty-Area {
+		width: 100%;
+		height: 100%;
+	}
+
+	:global(.Section-Code) {
+		margin-top: 0.4em;
 	}
 </style>
