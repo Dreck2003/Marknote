@@ -5,6 +5,7 @@ export interface SvgProps {
 	stroke?: string;
 	"stroke-width"?: string | number;
 	class?: string;
+	viewBox?: string;
 }
 
 export const SvgDefaultProps = (): SvgProps => ({
@@ -13,6 +14,7 @@ export const SvgDefaultProps = (): SvgProps => ({
 	width: 24,
 	stroke: "black",
 	"stroke-width": 1,
+	viewBox: "0 0 24 24",
 });
 
 /*   Chevron or Arrow  */

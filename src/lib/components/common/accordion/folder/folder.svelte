@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ChevronIcon from "../../../svg/chevron-icon.svelte";
 	import File from "./file.svelte";
 	import type { FolderContent } from "../../../../interfaces/files/files";
 	import {
@@ -8,9 +7,10 @@
 		type FileMenuProps,
 		type FolderMenuProps,
 	} from "../../../../store/store/menus";
+	import FolderOpenCloseIcon from "./folder-open-close-icon.svelte";
 	export let content: FolderContent;
 	export let expanded = false;
-	export let padding = false;
+	export let isRoot = false;
 	export let click = (e: MouseEvent, height: number) => {};
 	export let handleFolderMenu = (e: MouseEvent, folder: FolderMenuProps) => {};
 	export let parentFolders: string[];
@@ -22,49 +22,41 @@
 	const handleClickFolder = (e: MouseEvent) => {
 		click(e, 30);
 	};
-	let showDots = false;
+
+	const cellHeight = 30;
 </script>
 
 <div class="Folder_Content" on:click={handleClickFolder} on:keydown>
 	<header
-		on:click={() => {
-			if (content.files.length <= 0 && content.folders.length <= 0) return;
-			expanded = !expanded;
-		}}
+		on:click={() => (expanded = !expanded)}
 		on:keydown
-		on:mouseover={() => (showDots ? null : (showDots = true))}
 		on:focus
 		on:contextmenu={(e) => {
 			e.preventDefault();
 			handleFolderMenu(e, getFolderDataForMenu(content, parentFolders));
 		}}
-		on:mouseleave={() => {
-			showDots ? (showDots = false) : null;
-		}}
 		class="grid a-i-center"
-		style="padding-left: {padding
-			? '0.7em'
-			: '0em'};pointer-events:{content.files || content.folders
-			? 'auto'
-			: 'none'}"
+		style:pointer-events={content.files || content.folders ? "auto" : "none"}
+		style:--cell-height={cellHeight}
 	>
-		<span>
-			<ChevronIcon
-				svgProps={{ class: "ChevronIcon flex", "stroke-width": 0.1 }}
-				position={expanded ? "down" : "right"}
-			/>
+		<span class="flex-c">
+			<FolderOpenCloseIcon bind:expanded />
 		</span>
-		<span class="ellipsis">
+		<span class="ellipsis fs-300 bold text-gray-600">
 			{content.title}
 		</span>
 	</header>
 	{#if expanded}
-		<section>
+		<section
+			class="Folder_Section"
+			class:root={isRoot}
+			class:NotRoot={!isRoot}
+			style:--files={cellHeight * (content.files.length ?? 0) + "px"}
+		>
 			{#if content.folders.length}
 				{#each content.folders as folder}
 					<svelte:self
 						content={{ ...folder }}
-						padding
 						{handleFolderMenu}
 						{handleFileMenu}
 						parentFolders={content.folders.map(({ title }) => title)}
@@ -74,7 +66,7 @@
 			{#if content.files.length}
 				{#each content.files as file}
 					<File
-						{padding}
+						className="fs-200 text-gray-600"
 						{...file}
 						folderId={content.id}
 						on:contextmenu={(e) => {
@@ -97,22 +89,27 @@
 
 <style>
 	.Folder_Content {
-		width: 100%;
 		max-width: 100%;
+		position: relative;
 		user-select: none;
-	}
-
-	.Folder_Content > header:hover {
-		background-color: #b4ccee84;
+		width: 100%;
 	}
 
 	.Folder_Content > header {
 		cursor: pointer;
-		padding-left: 1em;
-		height: 30px;
 		grid-template-columns: 20% 60% 20%;
+		height: var(--cell-height) px;
 	}
 	:global(.Wrapper_Menu) {
 		display: flex;
+	}
+
+	.Folder_Section {
+		margin-left: 0.9em;
+		position: relative;
+	}
+
+	.Folder_Section.NotRoot {
+		border-left: 1px dashed gray;
 	}
 </style>

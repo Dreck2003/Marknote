@@ -1,17 +1,22 @@
 <script lang="ts">
-	import FolderFileMenu from "./menu.svelte";
-	import OptionMenu from "./common/option-menu.svelte";
-	import { FileMenuState } from "../../../store/store/menus/file";
-	import { MenuFileOptions } from "../../../interfaces/files/folder-menu";
-	import { FolderStoreAction } from "../../../store/store/folder-store";
+	import { FolderStoreAction } from "../../../store/store";
+	import { MenuFileOptions } from "../../../interfaces";
+	import { FileMenuState } from "../../../store/store/menus";
+	import Menu from "./principal/menu.svelte";
+	import OptionInput from "./options/option-input.svelte";
+	import Option from "./principal/option.svelte";
 	import {
 		FileNamingError,
+		FolderNamingError,
 		validateFileName,
 	} from "../../../utils/errors/naming-errors";
+	import { COLORS } from "../../../interfaces/styles";
 
+	let optionId = MenuFileOptions.nothing;
 	export let visible = false;
 	export let handleOutClick = () => {};
-	let optionId = MenuFileOptions.nothing;
+
+	$: !visible && (() => (optionId = MenuFileOptions.nothing))();
 
 	const handleOptionsSelected = (v: string) => {
 		switch (optionId) {
@@ -54,45 +59,42 @@
 	};
 </script>
 
-<FolderFileMenu
+<Menu
 	{visible}
 	bind:y={$FileMenuState.y}
 	on:outclick={() => {
 		optionId = MenuFileOptions.nothing;
 		handleOutClick();
 	}}
+	customStyle={{ bg: `hsla(${COLORS["Green300"]})`, color: "white" }}
 >
-	<OptionMenu
-		handleKeyDown={(_, v) => {
-			if (v.length <= 0) {
-				return [true, FileNamingError.emptyName];
-			}
-		}}
-		dispatchClick={() => {
-			optionId = MenuFileOptions.renameFile;
-		}}
-		showInput={optionId === MenuFileOptions.renameFile}
-		text={"Rename File"}
-		on:selectInput={(e) => {
-			handleOptionsSelected(e.detail.value);
-		}}
+	<OptionInput
+		text="Rename File"
+		selected={optionId === MenuFileOptions.renameFile}
 		handleInput={(v) => {
 			if ($FileMenuState.files.includes(v)) {
 				return [true, FileNamingError.fileExist];
 			}
-
 			return validateFileName(v);
 		}}
-		withInput
+		handleKeyDown={(_, v) => {
+			if (v.length <= 0) {
+				return [true, FolderNamingError.EmptyName];
+			}
+		}}
+		on:selectInput={(e) => handleOptionsSelected(e.detail.value)}
+		on:click={() => (optionId = MenuFileOptions.renameFile)}
 	/>
-	<OptionMenu
-		dispatchClick={async () => {
+	<Option
+		selected={optionId == MenuFileOptions.deleteFile}
+		hover={`hsla(${COLORS["Green200"]},60%)`}
+		on:click={async () => {
 			optionId = MenuFileOptions.deleteFile;
 			let confirmed = await confirm("Are you sure");
 			if (confirmed) {
 				handleOptionsSelected("null");
 			}
 		}}
-		text={"Delete File"}
+		text="Delete File"
 	/>
-</FolderFileMenu>
+</Menu>
