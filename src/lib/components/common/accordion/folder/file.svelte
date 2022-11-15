@@ -1,7 +1,11 @@
 <script lang="ts">
 	import FileIcon from "../../../svg/file-icon.svelte";
 	import { COLORS } from "../../../../interfaces/styles/index";
-	import { FileReaderStore } from "../../../../store/store";
+	import {
+		FileReaderStore,
+		MarkdownStore,
+		MarkdownStoreActions,
+	} from "../../../../store/store";
 	export let name = "";
 	export let content = "";
 	export let path = "";
@@ -18,6 +22,13 @@
 				id,
 				folderId,
 			});
+			if ($MarkdownStore.visible) {
+				MarkdownStoreActions.convertMarkDown()
+					.then(() => {})
+					.catch((e) => {
+						console.log("error in parser markdown: ", e);
+					});
+			}
 		}
 	};
 </script>

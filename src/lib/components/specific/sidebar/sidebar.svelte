@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Folder from "../../common/accordion/folder/folder.svelte";
 	// import ShadowFolder from "../../common/accordion/folder/shadow-folder.svelte";
-	import { FileReaderActions, FolderStore } from "../../../store/store";
+	import { FolderStore } from "../../../store/store";
 	import {
 		FolderMenuState,
 		FileMenuState,
@@ -13,8 +13,6 @@
 	import FileMenu from "../../common/menu/file-menu.svelte";
 	import FolderMenu from "../../common/menu/folder-menu.svelte";
 	let y = 0;
-	export let seeMarkdown = false;
-	export let markdown: string;
 	const handleClickFolder = (e: MouseEvent, height: number) => {
 		y = Math.trunc(e.pageY / (height * 1.1)) * height;
 	};
@@ -60,23 +58,11 @@
 			}));
 		}
 	};
-
-	const handleConvertMarkdown = () => {
-		FileReaderActions.convertMarkDown()
-			.then((res) => {
-				seeMarkdown = !seeMarkdown;
-				markdown = res;
-			})
-			.catch((e) => {
-				console.log("error: ", e);
-			});
-	};
 </script>
 
 <section class="Sidebar bg-gray-100">
 	<div>
 		<!--folder principal, create files, folders HERE  -->
-		<button on:click={handleConvertMarkdown}> See markdown </button>
 	</div>
 	<div style="position: relative;">
 		<!-- <ShadowFolder bind:y style="transform: translate(0px,{y ?? 0}px);" /> -->
