@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { FolderStoreAction } from "../../../store/store";
+	import {
+		FileReaderActions,
+		FileReaderStore,
+		FolderStoreAction,
+	} from "../../../store/store";
 	import { MenuFileOptions } from "../../../interfaces";
 	import { FileMenuState } from "../../../store/store/menus";
 	import Menu from "./principal/menu.svelte";
@@ -28,6 +32,10 @@
 					$FileMenuState.fileId
 				)
 					.then((res) => {
+						if ($FileMenuState.fileId == $FileReaderStore.id) {
+							FileReaderStore.update((f) => ({ ...f, name: v }));
+							return;
+						}
 						console.log("rename file: ", res);
 					})
 					.catch((e) => {
@@ -46,6 +54,7 @@
 					$FileMenuState.fileId
 				)
 					.then((res) => {
+						FileReaderActions.reset();
 						console.log("remove file: ", res);
 					})
 					.catch((e) => console.log(e))

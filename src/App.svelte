@@ -28,7 +28,7 @@
 </script>
 
 <main class="grid" style="height: 100%;">
-	<Sidebar bind:seeMarkdown bind:markdown />
+	<Sidebar />
 	{#if seeMarkdown}
 		<MarkdowView bind:markdown />
 	{:else}
