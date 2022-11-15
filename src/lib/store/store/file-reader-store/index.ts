@@ -38,4 +38,14 @@ export const FileReaderActions = {
 		}
 		throw new Error("Not exist content");
 	},
+	reset() {
+		FileReaderStore.set({
+			isEmpty: true,
+			content: "",
+			folderId: Symbol(""),
+			id: Symbol(""),
+			name: "",
+			path: "",
+		});
+	},
 };
