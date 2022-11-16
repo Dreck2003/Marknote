@@ -68,7 +68,6 @@
 					.finally(() => {
 						visible = false;
 					});
-				console.log("delete file");
 				break;
 			}
 		}
