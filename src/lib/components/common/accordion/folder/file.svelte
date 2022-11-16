@@ -2,6 +2,7 @@
 	import FileIcon from "../../../svg/file-icon.svelte";
 	import { COLORS } from "../../../../interfaces/styles/index";
 	import {
+		CodeAreaStore,
 		FileReaderStore,
 		MarkdownStore,
 		MarkdownStoreActions,
@@ -14,6 +15,9 @@
 	export let id: symbol = Symbol("");
 	export let className = "";
 	const handleClick = () => {
+		if (!$CodeAreaStore.saved) {
+			return NotificationStoreActions.displayModal();
+		}
 		if ($FileReaderStore.id != id) {
 			FileReaderStore.set({
 				name,

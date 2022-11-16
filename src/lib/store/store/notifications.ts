@@ -13,10 +13,12 @@ export interface Notification {
 }
 export interface NotificationStoreI {
 	notifications: Notification[];
+	showModal?: boolean;
 }
 
 export const NotificationStore = writable<NotificationStoreI>({
 	notifications: [],
+	showModal: false,
 });
 
 const getValue = (): NotificationStoreI => {
@@ -41,5 +43,8 @@ export const NotificationStoreActions = {
 			...n,
 			notifications: n.notifications.filter(({ id }) => id !== i),
 		}));
+	},
+	displayModal() {
+		NotificationStore.update((not) => ({ ...not, showModal: true }));
 	},
 };

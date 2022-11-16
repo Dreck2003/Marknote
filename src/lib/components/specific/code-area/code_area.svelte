@@ -545,6 +545,8 @@
 		let event = e as InputEvent;
 		const textarea = e.target as HTMLTextAreaElement;
 		const { selectionStart, selectionEnd } = textarea;
+		dispatcher("change", value);
+
 		// Hard implementation => 😓
 		// if (event.inputType === InputType.insertText && event.data !== null) {
 		// 	return (position = {
@@ -622,6 +624,7 @@
 		autocorrect="off"
 		spellcheck={false}
 		wrap="off"
+		on:blur
 		acceptcharset="ut-f8"
 		on:keydown={handleKeydown}
 		on:select={handleSelect}

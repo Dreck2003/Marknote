@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { saveFile } from "../../../utils/files/files";
 	import {
+		CodeAreaStore,
 		FileReaderActions,
 		FileReaderStore,
 		FolderStoreAction,
@@ -63,8 +64,14 @@
 					MarkdownStoreActions.reset();
 				}}
 				on:closeFile={() => {
-					FileReaderActions.reset();
-					MarkdownStoreActions.reset();
+					if (!$CodeAreaStore.saved) {
+						return NotificationStoreActions.displayModal();
+					}
+
+					if ($CodeAreaStore.saved) {
+						FileReaderActions.reset();
+						MarkdownStoreActions.reset();
+					}
 				}}
 			/>
 			{#if $MarkdownStore.visible}
@@ -73,6 +80,12 @@
 				<CodeArea
 					value={$FileReaderStore.content ?? ""}
 					on:save={handleSaveFile}
+					on:change={(e) => {
+						$CodeAreaStore.content = e.detail;
+						if ($CodeAreaStore.saved) {
+							$CodeAreaStore.saved = false;
+						}
+					}}
 				/>
 			{/if}
 		</section>

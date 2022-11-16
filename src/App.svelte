@@ -3,11 +3,11 @@
 	import NotifyContainer from "./lib/components/containers/notifications/notify-container.svelte";
 	import { onMount } from "svelte";
 	import FileArea from "./lib/components/layout/file-area/file-area.svelte";
-	import MarkdowView from "./lib/components/specific/render-markdown/markdow-view.svelte";
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 	import { FileEvents } from "./lib/events/events";
 	import { FolderStoreAction } from "./lib/store/store";
 	import { NotificationStoreActions } from "./lib/store/store/notifications";
+	import SaveModal from "./lib/components/specific/save-modal.svelte";
 
 	onMount(async () => {
 		const handleReadFile = async () => {
@@ -26,20 +26,15 @@
 			unlisten();
 		};
 	});
-
-	let seeMarkdown = false;
-	let markdown = "";
 </script>
 
 <main class="grid" style="height: 100%;">
 	<Sidebar />
-	{#if seeMarkdown}
-		<MarkdowView bind:markdown />
-	{:else}
-		<FileArea />
-	{/if}
+	<FileArea />
 </main>
 <NotifyContainer />
+
+<SaveModal />
 
 <style>
 	main {

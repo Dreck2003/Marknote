@@ -1,6 +1,38 @@
 <script>
+	import { saveFile } from "../../utils/files/files";
+	import {
+		CodeAreaStore,
+		FileReaderStore,
+		FolderStoreAction,
+		NotificationStoreActions,
+	} from "../../store/store";
+	import { NotificationStore } from "../../store/store";
 	import Modal from "../modals/modal.svelte";
-	export let showModal = false;
+
+	$: showModal = $NotificationStore.showModal;
+
+	const handleSaveFile = () => {
+		console.log("save file");
+		saveFile($FileReaderStore.path, $CodeAreaStore.content)
+			.then((e) => {
+				$FileReaderStore.content = $CodeAreaStore.content;
+				FolderStoreAction.saveFile(
+					$FileReaderStore.folderId,
+					$FileReaderStore.id,
+					$CodeAreaStore.content
+				);
+			})
+			.catch((e) => {
+				NotificationStoreActions.add({
+					type: "Danger",
+					content: "Error to save file",
+				});
+			})
+			.finally(() => {
+				$CodeAreaStore.saved = true;
+				$NotificationStore.showModal = false;
+			});
+	};
 </script>
 
 {#if showModal}
@@ -15,13 +47,28 @@
 				</section>
 				<hr class="bg-gray-200" />
 				<div class="Modal-Buttons flex flex-d-r j-c-f-end">
-					<button class="bg-green-300 text-white">Save</button>
+					<button class="bg-green-300 text-white" on:click={handleSaveFile}>
+						Save
+					</button>
+					<button
+						class="bg-gray-100"
+						on:click={() => {
+							$CodeAreaStore.saved = true;
+							$CodeAreaStore.content = $FileReaderStore.content ?? "";
+							$FileReaderStore.content = $FileReaderStore.content;
+							showModal = false;
+						}}
+					>
+						Do not save
+					</button>
 					<button
 						class="bg-gray-100 "
 						on:click={() => {
 							showModal = false;
-						}}>Close</button
+						}}
 					>
+						Close
+					</button>
 				</div>
 			</div>
 		</div>
