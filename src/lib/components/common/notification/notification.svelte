@@ -13,10 +13,10 @@
 	};
 
 	const TypeNotify: Omit<NotifyI, "Custom"> = {
-		Danger: COLORS["Red300"],
-		Succes: COLORS["Green300"],
-		Info: "44, 61%, 54%", //COLORS["Green300"],
-		Warning: "32, 50%, 54%", //COLORS["Gray300"],
+		Danger: `hsla(${COLORS["RedError"]},70%)`,
+		Succes: `hsla(${COLORS["GreenError"]},70%)`,
+		Info: `hsla(${COLORS["SoftBlueError"]},73%)`,
+		Warning: `hsla(${COLORS["OrangeError"]},73%)`,
 	};
 
 	$: NotifyStyle = (() => {
@@ -25,7 +25,7 @@
 		}
 		return {
 			color: `hsla(${COLORS["White000"]})`,
-			bg: `hsla(${TypeNotify[type]})`,
+			bg: TypeNotify[type],
 		};
 	})();
 </script>
@@ -49,7 +49,6 @@
 	.Notification {
 		background-color: var(--bg);
 		color: var(--color);
-		/* border: 1px solid red; */
 		padding: 0.2em 0.5em;
 		position: relative;
 	}
@@ -57,5 +56,6 @@
 		position: absolute;
 		top: 2px;
 		right: 2px;
+		cursor: pointer;
 	}
 </style>

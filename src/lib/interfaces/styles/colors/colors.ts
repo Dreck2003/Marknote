@@ -30,3 +30,16 @@ export enum RED_COLORS {
 	Red400 = "0, 45%, 55%",
 	Red500 = "0, 53%, 48%",
 }
+
+export enum OTHER_RED_COLORS {
+	RedError = "4, 90%, 58%",
+}
+export enum OTHER_GREEN_COLORS {
+	GreenError = "158, 95%, 34%",
+}
+export enum OTHER_SOFT_BLUE_COLORS {
+	SoftBlueError = "207, 90%, 54%",
+}
+export enum OTHER_ORANGE_COLORS {
+	OrangeError = "36, 100%, 50%",
+}
