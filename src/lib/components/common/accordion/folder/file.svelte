@@ -5,6 +5,7 @@
 		FileReaderStore,
 		MarkdownStore,
 		MarkdownStoreActions,
+		NotificationStoreActions,
 	} from "../../../../store/store";
 	export let name = "";
 	export let content = "";
@@ -23,11 +24,12 @@
 				folderId,
 			});
 			if ($MarkdownStore.visible) {
-				MarkdownStoreActions.convertMarkDown()
-					.then(() => {})
-					.catch((e) => {
-						console.log("error in parser markdown: ", e);
+				MarkdownStoreActions.convertMarkDown().catch((e) => {
+					NotificationStoreActions.add({
+						type: "Danger",
+						content: "Cannot convert this file to view",
 					});
+				});
 			}
 		}
 	};

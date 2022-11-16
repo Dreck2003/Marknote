@@ -7,14 +7,17 @@
 	import Sidebar from "./lib/components/specific/sidebar/sidebar.svelte";
 	import { FileEvents } from "./lib/events/events";
 	import { FolderStoreAction } from "./lib/store/store";
+	import { NotificationStoreActions } from "./lib/store/store/notifications";
 
 	onMount(async () => {
 		const handleReadFile = async () => {
 			try {
 				await FolderStoreAction.OpenFolder();
 			} catch (error) {
-				alert("Not posible open files");
-				console.log({ error });
+				NotificationStoreActions.add({
+					type: "Warning",
+					content: "Could not open the folder",
+				});
 			}
 		};
 

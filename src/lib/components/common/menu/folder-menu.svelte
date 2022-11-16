@@ -11,6 +11,7 @@
 		validateFolderName,
 	} from "../../../utils/errors/naming-errors";
 	import { COLORS } from "../../../interfaces/styles";
+	import { NotificationStoreActions } from "../../../store/store";
 
 	export let visible = false;
 	export let handleOutClick = () => {};
@@ -32,9 +33,13 @@
 					v
 				)
 					.then((res) => {
-						console.log("create folder: ", res);
+						// More logic here
 					})
 					.catch((e) => {
+						NotificationStoreActions.add({
+							type: "Danger",
+							content: "Error creating the folder. Try again",
+						});
 						console.log(e);
 					})
 					.finally(() => {
@@ -50,9 +55,13 @@
 					v
 				)
 					.then((res) => {
-						console.log("create file: ", res);
+						// console.log("create file: ", res);
 					})
 					.catch((e) => {
+						NotificationStoreActions.add({
+							type: "Danger",
+							content: "Error creating the file. Try again",
+						});
 						console.log(e);
 					})
 					.finally(() => {
@@ -70,7 +79,10 @@
 						console.log("rename folder: ", res);
 					})
 					.catch((e) => {
-						console.log(e);
+						NotificationStoreActions.add({
+							type: "Danger",
+							content: "It was not possible to rename the folder name",
+						});
 					})
 					.finally(() => {
 						reset();
@@ -86,7 +98,10 @@
 						console.log("remove folder: ", res);
 					})
 					.catch((e) => {
-						console.log(e);
+						NotificationStoreActions.add({
+							type: "Danger",
+							content: "Cannot delete folder",
+						});
 					})
 					.finally(() => {
 						reset();

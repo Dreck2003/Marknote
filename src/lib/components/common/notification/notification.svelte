@@ -15,7 +15,7 @@
 		Danger: COLORS["Red300"],
 		Succes: COLORS["Green300"],
 		Info: "44, 61%, 54%", //COLORS["Green300"],
-		Warning: "32°, 50%, 54%", //COLORS["Gray300"],
+		Warning: "32, 50%, 54%", //COLORS["Gray300"],
 	};
 
 	$: NotifyStyle = (() => {

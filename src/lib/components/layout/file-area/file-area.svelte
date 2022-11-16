@@ -6,6 +6,7 @@
 		FolderStoreAction,
 		MarkdownStore,
 		MarkdownStoreActions,
+		NotificationStoreActions,
 	} from "../../../store/store";
 	import CodeArea from "../../specific/code-area/code_area.svelte";
 	import TopBar from "../../bars/top-bar.svelte";
@@ -22,7 +23,10 @@
 				);
 			})
 			.catch((e) => {
-				console.log("error in save file");
+				NotificationStoreActions.add({
+					type: "Danger",
+					content: "Error to save file",
+				});
 			});
 	};
 	const handleConvertMarkdown = () => {
@@ -31,7 +35,10 @@
 				$MarkdownStore.visible = true;
 			})
 			.catch((e) => {
-				console.log("error: ", e);
+				NotificationStoreActions.add({
+					type: "Danger",
+					content: "Cannot convert this file to view",
+				});
 			});
 	};
 </script>
