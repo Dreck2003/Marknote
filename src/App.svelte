@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { listen } from "@tauri-apps/api/event";
+	import NotifyContainer from "./lib/components/containers/notifications/notify-container.svelte";
 	import { onMount } from "svelte";
 	import FileArea from "./lib/components/layout/file-area/file-area.svelte";
 	import MarkdowView from "./lib/components/specific/render-markdown/markdow-view.svelte";
@@ -35,6 +36,7 @@
 		<FileArea />
 	{/if}
 </main>
+<NotifyContainer />
 
 <style>
 	main {

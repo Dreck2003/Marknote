@@ -194,6 +194,23 @@
 	fill: hsl(var(--clr-gray-800));
 }
 
+/* fill white */
+.fill-white {
+	fill: hsl(var(--clr-white));
+}
+.fill-white-100 {
+	fill: hsl(var(--clr-white-100));
+}
+
+/* stroke-white */
+
+.stroke-white {
+	stroke: hsl(var(--clr-white));
+}
+.stroke-white-100 {
+	stroke: hsl(var(--clr-white-100));
+}
+
 /*   stroke-green   */
 .stroke-green-100 {
 	stroke: hsl(var(--clr-green-100));
