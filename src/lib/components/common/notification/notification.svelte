@@ -2,6 +2,7 @@
 	import type { TypeNotification } from "../../../store/store/notifications";
 	import { COLORS } from "../../../interfaces/styles";
 	import CloseIcon from "../../svg/close-icon.svelte";
+	import { fly } from "svelte/transition";
 
 	export let text = "";
 	export let type: TypeNotification = "Succes";
@@ -33,6 +34,8 @@
 	class="Notification"
 	style:--color={NotifyStyle.color}
 	style:--bg={NotifyStyle.bg}
+	in:fly={{ x: 15, duration: 500 }}
+	out:fly={{ x: 15, duration: 300 }}
 >
 	{text}
 	<CloseIcon
@@ -52,7 +55,7 @@
 	}
 	:global(.Notification svg) {
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: 2px;
+		right: 2px;
 	}
 </style>

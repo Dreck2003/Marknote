@@ -6,14 +6,17 @@
 	import Notification from "../../common/notification/notification.svelte";
 </script>
 
-<section class="Notify-Containers flex flex-d-c">
-	{#each $NotificationStore.notifications as notify, i}
+<section
+	class="Notify-Containers flex flex-d-c"
+	class:hidden={$NotificationStore.notifications.length == 0}
+>
+	{#each $NotificationStore.notifications as notify (notify.id)}
 		<Notification
 			text={notify.content}
 			type={notify.type}
 			on:click={(e) => {
 				e.preventDefault();
-				NotificationStoreActions.remove(i);
+				NotificationStoreActions.remove(notify.id);
 			}}
 		/>
 	{/each}
@@ -29,8 +32,14 @@
 		height: 12em;
 		width: 22em;
 		overflow: auto;
-		padding-right: 0.2em;
+		/* padding-right: 0.2em; */
+		margin-right: 0.5em;
 	}
+
+	.Notify-Containers.hidden {
+		display: none;
+	}
+
 	.Notify-Containers::-webkit-scrollbar {
 		width: 0.2em;
 		height: 0.2em;

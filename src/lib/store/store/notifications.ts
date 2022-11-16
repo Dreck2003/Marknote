@@ -9,8 +9,8 @@ export type TypeNotification =
 export interface Notification {
 	type: TypeNotification;
 	content: string;
+	id: symbol;
 }
-
 export interface NotificationStoreI {
 	notifications: Notification[];
 }
@@ -27,22 +27,19 @@ const getValue = (): NotificationStoreI => {
 };
 
 export const NotificationStoreActions = {
-	add(notify: Notification) {
+	add(notify: Omit<Notification, "id">) {
 		NotificationStore.update((n) => ({
 			...n,
-			notifications: n.notifications.concat(notify),
+			notifications: n.notifications.concat({ ...notify, id: Symbol("") }),
 		}));
 	},
 	getStore() {
 		return getValue();
 	},
-	remove(index: number) {
-		const state = getValue();
-		const before = state.notifications.slice(0, index);
-		const after = state.notifications.slice(index + 1);
+	remove(i: symbol) {
 		NotificationStore.update((n) => ({
 			...n,
-			notifications: before.concat(after),
+			notifications: n.notifications.filter(({ id }) => id !== i),
 		}));
 	},
 };
