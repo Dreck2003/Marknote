@@ -9,10 +9,13 @@
 	import { NotificationStoreActions } from "./lib/store/store/notifications";
 	import SaveModal from "./lib/components/specific/save-modal.svelte";
 
+	let existFolder = false;
+
 	onMount(async () => {
 		const handleReadFile = async () => {
 			try {
 				await FolderStoreAction.OpenFolder();
+				existFolder = true;
 			} catch (error) {
 				NotificationStoreActions.add({
 					type: "Warning",
@@ -29,7 +32,7 @@
 </script>
 
 <main class="grid" style="height: 100%;">
-	<Sidebar />
+	<Sidebar bind:existFolder />
 	<FileArea />
 </main>
 <NotifyContainer />

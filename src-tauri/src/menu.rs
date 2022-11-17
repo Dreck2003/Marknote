@@ -21,8 +21,8 @@ impl CustomMenuFile {
     fn create() -> Vec<CustomMenuItem> {
         let init_file_menu = MenuFileKeys::new();
         vec![
-            CustomMenuItem::new(init_file_menu.new_file, "New File"),
-            CustomMenuItem::new(init_file_menu.open_file, "Open File"),
+            // CustomMenuItem::new(init_file_menu.new_file, "New File"),
+            // CustomMenuItem::new(init_file_menu.open_file, "Open File"),
             CustomMenuItem::new(init_file_menu.open_folder, "Open Folder"),
         ]
     }
@@ -48,10 +48,10 @@ pub fn create_menu() -> Menu {
 pub fn handle_event_menu(event: &WindowMenuEvent) {
     match event.menu_item_id() {
         "new_file" => {
-            event.window().emit("new-file", "New File");
+            // event.window().emit("new-file", "New File");
         }
         "open_file" => {
-            event.window().emit("open-file", "Open File");
+            // event.window().emit("open-file", "Open File");
         }
         "open_folder" => {
             event.window().emit("open-folder", "Open Folder");

@@ -16,6 +16,7 @@
 	const handleClickFolder = (e: MouseEvent, height: number) => {
 		y = Math.trunc(e.pageY / (height * 1.1)) * height;
 	};
+	export let existFolder: boolean;
 
 	let visibleMenu = { folder: false, file: false };
 
@@ -60,20 +61,25 @@
 	};
 </script>
 
-<section class="Sidebar bg-gray-100">
+<section class="Sidebar bg-gray-100 {existFolder ? '' : 'flex flex-c'}">
 	<div>
 		<!--folder principal, create files, folders HERE  -->
 	</div>
 	<div style="position: relative;">
 		<!-- <ShadowFolder bind:y style="transform: translate(0px,{y ?? 0}px);" /> -->
-		<Folder
-			content={$FolderStore}
-			click={handleClickFolder}
-			{handleFolderMenu}
-			{handleFileMenu}
-			parentFolders={[]}
-			isRoot
-		/>
+		{#if existFolder}
+			<Folder
+				content={$FolderStore}
+				click={handleClickFolder}
+				{handleFolderMenu}
+				{handleFileMenu}
+				parentFolders={[]}
+				isRoot
+				expanded
+			/>
+		{:else}
+			<div class="Not-Folder text-gray-700 fs-400">No open folder</div>
+		{/if}
 		<FolderMenu
 			bind:visible={visibleMenu.folder}
 			handleOutClick={() => {
