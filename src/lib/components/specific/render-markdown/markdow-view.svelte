@@ -9,11 +9,30 @@
 <style>
 	.Render-Markdown {
 		padding: 1em;
+		overflow-y: hidden;
+		max-width: 100%;
+	}
+	:global(p) {
+		color: rgb(59, 58, 58);
 	}
 	* {
 		font-size: initial;
 	}
 
+	:global(a) {
+		color: rgb(75, 67, 161);
+		text-decoration: none;
+	}
+	:global(a:hover) {
+		text-decoration: underline;
+	}
+	:global(hr) {
+		height: 1px;
+		background-color: gray;
+	}
+	:global(img) {
+		max-width: 100%;
+	}
 	:global(h1, h2, h3, h4, h5, h6) {
 		color: rgb(66, 67, 69);
 	}
