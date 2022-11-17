@@ -3,8 +3,10 @@
     windows_subsystem = "windows"
 )]
 
+#[allow(unused_imports, dead_code)]
 mod commands;
 mod menu;
+mod parse_markdown;
 mod parser;
 
 fn main() {

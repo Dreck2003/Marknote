@@ -6,6 +6,7 @@ use crate::parser::{
 };
 pub mod get_blocks_lines;
 pub mod parse_line;
+mod parse_single_line;
 pub mod type_line;
 
 #[allow(dead_code)]
@@ -43,7 +44,7 @@ pub fn mark_from_lines(group_lines: Vec<(TypeLine, Vec<String>)>) -> String {
     return string_v;
 }
 
-#[cfg(test)]
+// #[cfg(test)]
 mod markdow_test {
 
     use crate::parser::get_blocks_lines::parse_lines;
