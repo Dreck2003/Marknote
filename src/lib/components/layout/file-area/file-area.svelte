@@ -9,13 +9,15 @@
 		MarkdownStoreActions,
 		NotificationStoreActions,
 	} from "../../../store/store";
-	import CodeArea from "../../specific/code-area/code_area.svelte";
 	import TopBar from "../../bars/top-bar.svelte";
 	import MarkdowView from "../../specific/render-markdown/markdow-view.svelte";
 	import FileIcon from "../../svg/file-icon.svelte";
+	import EditorArea from "../../specific/code-area/editor-area.svelte";
 	const handleSaveFile = (event: CustomEvent) => {
 		saveFile($FileReaderStore.path, event.detail.content)
 			.then((e) => {
+				$CodeAreaStore.saved = true;
+				$CodeAreaStore.content = event.detail.content;
 				$FileReaderStore.content = event.detail.content;
 				FolderStoreAction.saveFile(
 					$FileReaderStore.folderId,
@@ -77,7 +79,7 @@
 			{#if $MarkdownStore.visible}
 				<MarkdowView bind:markdown={$MarkdownStore.content} />
 			{:else}
-				<CodeArea
+				<EditorArea
 					value={$FileReaderStore.content ?? ""}
 					on:save={handleSaveFile}
 					on:change={(e) => {

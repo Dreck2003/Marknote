@@ -65,6 +65,7 @@
 		border: 1px solid rgba(74, 75, 77, 0.445);
 		align-items: center;
 		justify-content: space-between;
+		height: 40px;
 	}
 
 	.Top-Bar h5 {
