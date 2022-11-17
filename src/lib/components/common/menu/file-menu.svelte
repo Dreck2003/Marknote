@@ -3,6 +3,7 @@
 		FileReaderActions,
 		FileReaderStore,
 		FolderStoreAction,
+		NotificationStoreActions,
 	} from "../../../store/store";
 	import { MenuFileOptions } from "../../../interfaces";
 	import { FileMenuState } from "../../../store/store/menus";
@@ -36,10 +37,12 @@
 							FileReaderStore.update((f) => ({ ...f, name: v }));
 							return;
 						}
-						console.log("rename file: ", res);
 					})
 					.catch((e) => {
-						console.log(e);
+						NotificationStoreActions.add({
+							type: "Danger",
+							content: "Cannot rename file",
+						});
 					})
 					.finally(() => {
 						visible = false;
@@ -55,13 +58,16 @@
 				)
 					.then((res) => {
 						FileReaderActions.reset();
-						console.log("remove file: ", res);
 					})
-					.catch((e) => console.log(e))
+					.catch((e) => {
+						NotificationStoreActions.add({
+							type: "Danger",
+							content: "Cannot delete file",
+						});
+					})
 					.finally(() => {
 						visible = false;
 					});
-				console.log("delete file");
 				break;
 			}
 		}

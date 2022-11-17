@@ -16,6 +16,14 @@
 	--clr-red-300: 0, 52%, 66%;
 	--clr-red-400: 0, 45%, 55%;
 	--clr-red-500: 0, 53%, 48%;
+	--clr-red-600: 4, 90% 58%;
+
+	--clr-orange-100: 0, 100%, 94%;
+	--clr-orange-200: 0, 52%, 76%;
+	--clr-orange-300: 0, 52%, 66%;
+	--clr-orange-400: 0, 45%, 55%;
+	--clr-orange-500: 0, 53%, 48%;
+	--clr-orange-600: 4, 90% 58%;
 
 	--clr-white: 0, 0%, 100%;
 	--clr-white-100: 135, 14%, 98%;
@@ -63,6 +71,7 @@ body {
 	min-height: 100vh;
 	min-width: 100vw;
 	height: 100vh;
+	position: relative;
 }
 
 button {

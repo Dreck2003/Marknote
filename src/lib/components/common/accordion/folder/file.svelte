@@ -2,9 +2,11 @@
 	import FileIcon from "../../../svg/file-icon.svelte";
 	import { COLORS } from "../../../../interfaces/styles/index";
 	import {
+		CodeAreaStore,
 		FileReaderStore,
 		MarkdownStore,
 		MarkdownStoreActions,
+		NotificationStoreActions,
 	} from "../../../../store/store";
 	export let name = "";
 	export let content = "";
@@ -13,6 +15,9 @@
 	export let id: symbol = Symbol("");
 	export let className = "";
 	const handleClick = () => {
+		if (!$CodeAreaStore.saved) {
+			return NotificationStoreActions.displayModal();
+		}
 		if ($FileReaderStore.id != id) {
 			FileReaderStore.set({
 				name,
@@ -23,11 +28,12 @@
 				folderId,
 			});
 			if ($MarkdownStore.visible) {
-				MarkdownStoreActions.convertMarkDown()
-					.then(() => {})
-					.catch((e) => {
-						console.log("error in parser markdown: ", e);
+				MarkdownStoreActions.convertMarkDown().catch((e) => {
+					NotificationStoreActions.add({
+						type: "Danger",
+						content: "Cannot convert this file to view",
 					});
+				});
 			}
 		}
 	};
