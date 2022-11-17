@@ -5,7 +5,6 @@
 
 mod commands;
 mod menu;
-mod parser;
 
 fn main() {
     tauri::Builder::default()

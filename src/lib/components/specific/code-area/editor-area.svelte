@@ -46,6 +46,8 @@
 		height: 100%;
 		font-size: 0.95rem;
 		outline: 0;
+		padding: 0.6em;
+		border: 0;
 	}
 
 	textarea::selection {

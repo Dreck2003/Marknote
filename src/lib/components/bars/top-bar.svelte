@@ -66,6 +66,8 @@
 		align-items: center;
 		justify-content: space-between;
 		height: 40px;
+		position: sticky;
+		top: 0;
 	}
 
 	.Top-Bar h5 {

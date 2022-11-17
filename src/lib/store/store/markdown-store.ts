@@ -31,7 +31,7 @@ export const MarkdownStoreActions = {
 
 		if (value.content.length > 0) {
 			const content = await invoke<string>(InvokeHandler.convertStrToMarkdown, {
-				lines: value.content.split("\n"),
+				content: value.content,
 			});
 			return MarkdownStore.update((mark) => ({ ...mark, content }));
 		}
