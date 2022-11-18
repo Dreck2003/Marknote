@@ -2,6 +2,8 @@ use std::{fs::rename, io::ErrorKind};
 
 use serde::{Deserialize, Serialize};
 
+use crate::file::{create_or_get_cache_info, save_url};
+
 #[derive(Serialize, Deserialize)]
 pub struct RenameValue(bool, String);
 
@@ -33,4 +35,14 @@ pub fn convert_str_to_markdown(content: &str) -> String {
     let mut html = String::new();
     pulldown_cmark::html::push_html(&mut html, parser);
     return html;
+}
+
+#[tauri::command]
+pub fn get_cache_info() -> Option<String> {
+    create_or_get_cache_info()
+}
+
+#[tauri::command]
+pub fn save_path_to_cache(url: &str) {
+    save_url(url)
 }

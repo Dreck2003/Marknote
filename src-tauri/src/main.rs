@@ -4,6 +4,7 @@
 )]
 
 mod commands;
+mod file;
 mod menu;
 
 fn main() {
@@ -14,7 +15,9 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             commands::rename_file_or_folder,
-            commands::convert_str_to_markdown
+            commands::convert_str_to_markdown,
+            commands::get_cache_info,
+            commands::save_path_to_cache,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

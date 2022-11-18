@@ -7,6 +7,7 @@ import {
 import {
 	createFile,
 	newFolder,
+	readDirectoryRecursive,
 	removeFile,
 } from "./../../../utils/files/files";
 import { OpenFolderEvent } from "../../../events/folder-events";
@@ -38,7 +39,12 @@ const getValueOfFolderStore = (): FolderContent => {
 
 export const FolderStoreAction = {
 	async OpenFolder() {
-		const folderTree = await OpenFolderEvent();
+		const result = await OpenFolderEvent();
+		FolderStore.set(result[0]);
+		return result[1];
+	},
+	async readFolderCache(url: string) {
+		const folderTree = await readDirectoryRecursive(url);
 		FolderStore.set(folderTree);
 	},
 	saveFile(folderId: symbol, fileId: symbol, content: string) {
