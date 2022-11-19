@@ -14,7 +14,7 @@
     "allowlist": {
       "fs":{
         "all": true,
-        "scope": ["$APP/*","$HOME/*","$DOCUMENT/*","$DESKTOP/*"]
+        "scope": ["$APP/*","$HOME/*","$DOCUMENT/*","$DESKTOP/*","$DOWNLOAD/*","$APPDATA/*"]
       },
       "path":{
         "all":true
