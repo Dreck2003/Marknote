@@ -8,28 +8,36 @@
   },
   "package": {
     "productName": "Marknote",
-    "version": "0.0.0"
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "fs":{
+        "all": true,
+        "scope": ["$APP/*","$HOME/*","$DOCUMENT/*","$DESKTOP/*","$DOWNLOAD/*","$APPDATA/*"]
+      },
+      "path":{
+        "all":true
+      },
+      "dialog":{
+        "open":true,
+        "confirm":true
+      }
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+      "category": "Productivity",
+      "copyright": "©",
       "deb": {
         "depends": []
       },
       "externalBin": [],
       "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
+        "icons/icon.png",
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.marknote.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -44,7 +52,21 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "embedBootstrapper"
+        }
+      }
+    },
+    "cli":{
+      "description": "", 
+      "longDescription": "", 
+      "beforeHelp": "", 
+      "afterHelp": "", 
+      "args": [], 
+      "subcommands": {
+        "subcommand-name": {
+        }
       }
     },
     "security": {
