@@ -27,7 +27,7 @@
     "bundle": {
       "active": true,
       "category": "Productivity",
-      "copyright": "©",
+      "copyright": "Copyright © Dreck Sallow 2021. All rights reserved.",
       "deb": {
         "depends": []
       },
