@@ -13,11 +13,11 @@
 		"lint": "eslint --fix ./src --ext .ts,.js,.svelte"
 	},
 	"dependencies": {
-		"@tauri-apps/api": "^1.1.0"
+		"@tauri-apps/api": "^1.2.0"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^1.0.1",
-		"@tauri-apps/cli": "^1.1.0",
+		"@tauri-apps/cli": "^1.2.0",
 		"@tsconfig/svelte": "^3.0.0",
 		"@types/node": "^18.7.10",
 		"@typescript-eslint/eslint-plugin": "^5.0.0",
